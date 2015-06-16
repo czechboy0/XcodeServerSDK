@@ -50,7 +50,7 @@ public class ConsoleLogger: Logger {
     }
     
     public func log(message: String) {
-        println(message)
+        print(message)
     }
 }
 
@@ -60,7 +60,7 @@ public class Log {
     public class func addLoggers(loggers: [Logger]) {
         for i in loggers {
             _loggers.append(i)
-            println("Added logger: \(i)")
+            print("Added logger: \(i)")
         }
     }
     

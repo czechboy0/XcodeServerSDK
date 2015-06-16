@@ -30,15 +30,13 @@ public class HTTP {
             //try to cast into HTTP response
             if let httpResponse = response as? NSHTTPURLResponse {
                 
-                if error != nil {
-                    
+                guard error != nil else {
                     //error in the networking stack
                     completion(response: httpResponse, body: nil, error: error)
                     return
                 }
                 
-                if data == nil {
-                    
+                guard data == nil else {
                     //no body, but a valid response
                     completion(response: httpResponse, body: nil, error: nil)
                     return
@@ -53,13 +51,13 @@ public class HTTP {
                         
                     case let s where s.rangeOfString("application/json") != nil:
                         
-                        let (json: AnyObject!, error) = JSON.parse(data)
-                        let headers = httpResponse.allHeaderFields
+                        let (json, error) = JSON.parse(data!)
+                        // let headers = httpResponse.allHeaderFields
                         completion(response: httpResponse, body: json, error: error)
                         
                     default:
                         //parse as UTF8 string
-                        let string = NSString(data: data, encoding: NSUTF8StringEncoding) as! String
+                        let string = NSString(data: data!, encoding: NSUTF8StringEncoding) as! String
                         
                         //check for common problems
                         let userInfo: NSDictionary? = {
@@ -92,7 +90,7 @@ public class HTTP {
             }
             
             
-        }).resume()
+        })?.resume()
     }
 
 }

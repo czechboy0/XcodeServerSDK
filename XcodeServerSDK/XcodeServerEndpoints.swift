@@ -34,8 +34,6 @@ public class XcodeServerEndPoints {
             return "/xcode/api"
         case .Xcode7:
             return "/api"
-        default:
-            return "UNSUPPORTED"
         }
     }
     
@@ -60,7 +58,7 @@ public class XcodeServerEndPoints {
             
         case .Integrations:
             
-            if let bot = params?["bot"] {
+            if let _ = params?["bot"] {
                 //gets a list of integrations for this bot
                 let bots = self.endpointURL(.Bots, params: params)
                 return "\(bots)/integrations"
@@ -100,8 +98,6 @@ public class XcodeServerEndPoints {
             let logout = "\(base)/auth/logout"
             return logout
             
-        default:
-            assertionFailure("Unsupported endpoint")
         }
     }
     
@@ -113,7 +109,7 @@ public class XcodeServerEndPoints {
         
         if let url = NSURL(string: wholePath) {
             
-            var request = NSMutableURLRequest(URL: url)
+            let request = NSMutableURLRequest(URL: url)
             
             request.HTTPMethod = method.rawValue
             
@@ -123,22 +119,20 @@ public class XcodeServerEndPoints {
                 let password = self.serverConfig.password ?? ""
                 let plainString = "\(user):\(password)" as NSString
                 let plainData = plainString.dataUsingEncoding(NSUTF8StringEncoding)
-                let base64String = plainData?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.allZeros)
+                let base64String = plainData?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
                 request.setValue("Basic \(base64String!)", forHTTPHeaderField: "Authorization")
             }
             
             if let body = body {
-                
-                var error: NSError?
-                let data = NSJSONSerialization.dataWithJSONObject(body, options: .allZeros, error: &error)
-                if let error = error {
-                    //parsing error
+                do {
+                    let data = try NSJSONSerialization.dataWithJSONObject(body, options: .PrettyPrinted)
+                    request.HTTPBody = data
+                    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                } catch {
+                    let error = error as NSError
                     Log.error("Parsing error \(error.description)")
                     return nil
                 }
-                
-                request.HTTPBody = data
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             }
             
             return request

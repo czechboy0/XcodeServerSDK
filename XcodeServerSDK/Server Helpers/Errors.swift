@@ -15,19 +15,20 @@ public enum BuildaError: String {
 public class Error {
     
     public class func fromType(type: BuildaError) -> NSError {
-        
         return self.withInfo(type.rawValue)
     }
     
     public class func withInfo(info: String?, internalError: NSError? = nil, userInfo: NSDictionary? = nil) -> NSError {
+        let finalInfo = NSMutableDictionary()
         
-        var finalInfo = NSMutableDictionary()
         if let info = info {
             finalInfo[NSLocalizedDescriptionKey] = info
         }
+        
         if let internalError = internalError {
             finalInfo["encountered_error"] = internalError
         }
+        
         if let userInfo = userInfo {
             finalInfo.addEntriesFromDictionary(userInfo as [NSObject : AnyObject])
         }

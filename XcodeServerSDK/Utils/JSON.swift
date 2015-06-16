@@ -15,34 +15,32 @@ public protocol JSONSerializable {
 
 public class JSON {
 
-    private class func parseDictionary(data: NSData) -> ([String: AnyObject]!, NSError!) {
-
-        let (object: AnyObject!, error) = self.parse(data)
-        return (object as! [String: AnyObject]!, error)
+    private class func parseDictionary(data: NSData) -> ([String: AnyObject]?, NSError?) {
+        let (object, error) = self.parse(data)
+        return (object as? [String: AnyObject], error)
     }
 
     private class func parseArray(data: NSData) -> ([AnyObject]!, NSError!) {
-        
-        let (object: AnyObject!, error) = self.parse(data)
-        return (object as! [AnyObject]!, error)
+        let (object, error) = self.parse(data)
+        return (object as? [AnyObject], error)
     }
     
-    public class func parse(url: NSURL) -> (AnyObject!, NSError!) {
+    public class func parse(url: NSURL) -> (AnyObject?, NSError?) {
         
-        var error: NSError?
-        if let data = NSData(contentsOfURL: url, options: NSDataReadingOptions.allZeros, error: &error) {
+        do {
+            let data = try NSData(contentsOfURL: url, options: NSDataReadingOptions(rawValue: 0))
             return self.parse(data)
+        } catch {
+            return (nil, error as NSError)
         }
-        return (nil, error)
     }
     
-    public class func parse(data: NSData) -> (AnyObject!, NSError!) {
-        
-        var parsingError: NSError?
-        if let obj: AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error: &parsingError) {
-            return (obj as AnyObject!, nil)
-        } else {
-            return (nil, parsingError)
+    public class func parse(data: NSData) -> (AnyObject?, NSError?) {
+        do {
+            let obj = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
+            return (obj as AnyObject, nil)
+        } catch {
+            return (nil, error as NSError)
         }
     }
 }

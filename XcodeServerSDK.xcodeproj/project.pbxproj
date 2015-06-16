@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		3A7B48C01B2A5AC40077ABEA /* XcodeServerSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 3A7B48BF1B2A5AC40077ABEA /* XcodeServerSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3A7B48C61B2A5AC40077ABEA /* XcodeServerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A7B48BA1B2A5AC40077ABEA /* XcodeServerSDK.framework */; };
-		3A7B48CD1B2A5AC40077ABEA /* XcodeServerSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48CC1B2A5AC40077ABEA /* XcodeServerSDKTests.swift */; };
+		3A7B48CD1B2A5AC40077ABEA /* XcodeServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48CC1B2A5AC40077ABEA /* XcodeServerTests.swift */; };
 		3A7B48E11B2A5ADE0077ABEA /* Bot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48D61B2A5ADE0077ABEA /* Bot.swift */; };
 		3A7B48E21B2A5ADE0077ABEA /* BotConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48D71B2A5ADE0077ABEA /* BotConfiguration.swift */; };
 		3A7B48E31B2A5ADE0077ABEA /* CIServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48D81B2A5ADE0077ABEA /* CIServer.swift */; };
@@ -26,6 +26,11 @@
 		3A7B48F11B2A5B7B0077ABEA /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48F01B2A5B7B0077ABEA /* JSON.swift */; };
 		3A7B48F51B2A5BC60077ABEA /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48F41B2A5BC60077ABEA /* Logging.swift */; };
 		3A7B48F71B2A5BDA0077ABEA /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B48F61B2A5BDA0077ABEA /* Errors.swift */; };
+		707D08961B2C684C003900F3 /* XcodeServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D08951B2C684C003900F3 /* XcodeServerConfig.swift */; };
+		707D08981B2C6954003900F3 /* EmailConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D08971B2C6954003900F3 /* EmailConfiguration.swift */; };
+		707D089A1B2C6986003900F3 /* BotSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D08991B2C6986003900F3 /* BotSchedule.swift */; };
+		707D089C1B2C69C4003900F3 /* Trigger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D089B1B2C69C4003900F3 /* Trigger.swift */; };
+		707D089E1B2C6A1F003900F3 /* TriggerConditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707D089D1B2C6A1F003900F3 /* TriggerConditions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +49,7 @@
 		3A7B48BF1B2A5AC40077ABEA /* XcodeServerSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XcodeServerSDK.h; sourceTree = "<group>"; };
 		3A7B48C51B2A5AC40077ABEA /* XcodeServerSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XcodeServerSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A7B48CB1B2A5AC40077ABEA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		3A7B48CC1B2A5AC40077ABEA /* XcodeServerSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeServerSDKTests.swift; sourceTree = "<group>"; };
+		3A7B48CC1B2A5AC40077ABEA /* XcodeServerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XcodeServerTests.swift; sourceTree = "<group>"; };
 		3A7B48D61B2A5ADE0077ABEA /* Bot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bot.swift; sourceTree = "<group>"; };
 		3A7B48D71B2A5ADE0077ABEA /* BotConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotConfiguration.swift; sourceTree = "<group>"; };
 		3A7B48D81B2A5ADE0077ABEA /* CIServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIServer.swift; sourceTree = "<group>"; };
@@ -61,6 +66,12 @@
 		3A7B48F01B2A5B7B0077ABEA /* JSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		3A7B48F41B2A5BC60077ABEA /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		3A7B48F61B2A5BDA0077ABEA /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		707D08951B2C684C003900F3 /* XcodeServerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XcodeServerConfig.swift; sourceTree = "<group>"; };
+		707D08971B2C6954003900F3 /* EmailConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailConfiguration.swift; sourceTree = "<group>"; };
+		707D08991B2C6986003900F3 /* BotSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BotSchedule.swift; sourceTree = "<group>"; };
+		707D089B1B2C69C4003900F3 /* Trigger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Trigger.swift; sourceTree = "<group>"; };
+		707D089D1B2C6A1F003900F3 /* TriggerConditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriggerConditions.swift; sourceTree = "<group>"; };
+		70F463361B2B3F4600C3F963 /* Interactions.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Interactions.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +98,7 @@
 			children = (
 				3A7B48BC1B2A5AC40077ABEA /* XcodeServerSDK */,
 				3A7B48C91B2A5AC40077ABEA /* XcodeServerSDKTests */,
+				70F463351B2B3EF800C3F963 /* Playgrounds */,
 				3A7B48BB1B2A5AC40077ABEA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -104,22 +116,14 @@
 			isa = PBXGroup;
 			children = (
 				3A7B48BF1B2A5AC40077ABEA /* XcodeServerSDK.h */,
-				3A7B48D61B2A5ADE0077ABEA /* Bot.swift */,
-				3A7B48D71B2A5ADE0077ABEA /* BotConfiguration.swift */,
-				3A7B48D81B2A5ADE0077ABEA /* CIServer.swift */,
-				3A7B48D91B2A5ADE0077ABEA /* Device.swift */,
-				3A7B48F61B2A5BDA0077ABEA /* Errors.swift */,
-				3A7B48EE1B2A5B520077ABEA /* HTTPUtils.swift */,
-				3A7B48DA1B2A5ADE0077ABEA /* Integration.swift */,
-				3A7B48F01B2A5B7B0077ABEA /* JSON.swift */,
-				3A7B48F41B2A5BC60077ABEA /* Logging.swift */,
-				3A7B48EC1B2A5B3C0077ABEA /* Server.swift */,
-				3A7B48DB1B2A5ADE0077ABEA /* SourceControlBlueprint.swift */,
 				3A7B48DC1B2A5ADE0077ABEA /* XcodeServer.swift */,
-				3A7B48DD1B2A5ADE0077ABEA /* XcodeServerConstants.swift */,
-				3A7B48DE1B2A5ADE0077ABEA /* XcodeServerEndpoints.swift */,
 				3A7B48DF1B2A5ADE0077ABEA /* XcodeServerEntity.swift */,
+				707D08951B2C684C003900F3 /* XcodeServerConfig.swift */,
+				3A7B48DE1B2A5ADE0077ABEA /* XcodeServerEndpoints.swift */,
 				3A7B48E01B2A5ADE0077ABEA /* XcodeServerFactory.swift */,
+				707D089F1B2C6AA1003900F3 /* Server Entities */,
+				707D08A11B2C6BB8003900F3 /* Server Helpers */,
+				707D08A01B2C6B6B003900F3 /* Utils */,
 				3A7B48BD1B2A5AC40077ABEA /* Supporting Files */,
 			);
 			path = XcodeServerSDK;
@@ -136,7 +140,7 @@
 		3A7B48C91B2A5AC40077ABEA /* XcodeServerSDKTests */ = {
 			isa = PBXGroup;
 			children = (
-				3A7B48CC1B2A5AC40077ABEA /* XcodeServerSDKTests.swift */,
+				3A7B48CC1B2A5AC40077ABEA /* XcodeServerTests.swift */,
 				3A7B48CA1B2A5AC40077ABEA /* Supporting Files */,
 			);
 			path = XcodeServerSDKTests;
@@ -148,6 +152,51 @@
 				3A7B48CB1B2A5AC40077ABEA /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		707D089F1B2C6AA1003900F3 /* Server Entities */ = {
+			isa = PBXGroup;
+			children = (
+				3A7B48D61B2A5ADE0077ABEA /* Bot.swift */,
+				3A7B48D71B2A5ADE0077ABEA /* BotConfiguration.swift */,
+				707D08971B2C6954003900F3 /* EmailConfiguration.swift */,
+				707D08991B2C6986003900F3 /* BotSchedule.swift */,
+				707D089B1B2C69C4003900F3 /* Trigger.swift */,
+				707D089D1B2C6A1F003900F3 /* TriggerConditions.swift */,
+				3A7B48D91B2A5ADE0077ABEA /* Device.swift */,
+				3A7B48DB1B2A5ADE0077ABEA /* SourceControlBlueprint.swift */,
+				3A7B48DA1B2A5ADE0077ABEA /* Integration.swift */,
+			);
+			path = "Server Entities";
+			sourceTree = "<group>";
+		};
+		707D08A01B2C6B6B003900F3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3A7B48EE1B2A5B520077ABEA /* HTTPUtils.swift */,
+				3A7B48F01B2A5B7B0077ABEA /* JSON.swift */,
+				3A7B48F41B2A5BC60077ABEA /* Logging.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		707D08A11B2C6BB8003900F3 /* Server Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3A7B48D81B2A5ADE0077ABEA /* CIServer.swift */,
+				3A7B48F61B2A5BDA0077ABEA /* Errors.swift */,
+				3A7B48EC1B2A5B3C0077ABEA /* Server.swift */,
+				3A7B48DD1B2A5ADE0077ABEA /* XcodeServerConstants.swift */,
+			);
+			path = "Server Helpers";
+			sourceTree = "<group>";
+		};
+		70F463351B2B3EF800C3F963 /* Playgrounds */ = {
+			isa = PBXGroup;
+			children = (
+				70F463361B2B3F4600C3F963 /* Interactions.playground */,
+			);
+			path = Playgrounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -206,7 +255,8 @@
 		3A7B48B11B2A5AC40077ABEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Honza Dvorsky";
 				TargetAttributes = {
 					3A7B48B91B2A5AC40077ABEA = {
@@ -265,13 +315,18 @@
 				3A7B48E91B2A5ADE0077ABEA /* XcodeServerEndpoints.swift in Sources */,
 				3A7B48E51B2A5ADE0077ABEA /* Integration.swift in Sources */,
 				3A7B48E81B2A5ADE0077ABEA /* XcodeServerConstants.swift in Sources */,
+				707D089C1B2C69C4003900F3 /* Trigger.swift in Sources */,
 				3A7B48E21B2A5ADE0077ABEA /* BotConfiguration.swift in Sources */,
 				3A7B48EA1B2A5ADE0077ABEA /* XcodeServerEntity.swift in Sources */,
+				707D08961B2C684C003900F3 /* XcodeServerConfig.swift in Sources */,
 				3A7B48EB1B2A5ADE0077ABEA /* XcodeServerFactory.swift in Sources */,
+				707D089E1B2C6A1F003900F3 /* TriggerConditions.swift in Sources */,
 				3A7B48E11B2A5ADE0077ABEA /* Bot.swift in Sources */,
 				3A7B48F71B2A5BDA0077ABEA /* Errors.swift in Sources */,
 				3A7B48ED1B2A5B3C0077ABEA /* Server.swift in Sources */,
+				707D08981B2C6954003900F3 /* EmailConfiguration.swift in Sources */,
 				3A7B48E41B2A5ADE0077ABEA /* Device.swift in Sources */,
+				707D089A1B2C6986003900F3 /* BotSchedule.swift in Sources */,
 				3A7B48F51B2A5BC60077ABEA /* Logging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -280,7 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3A7B48CD1B2A5AC40077ABEA /* XcodeServerSDKTests.swift in Sources */,
+				3A7B48CD1B2A5AC40077ABEA /* XcodeServerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +371,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -391,6 +447,7 @@
 				INFOPLIST_FILE = XcodeServerSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -408,6 +465,7 @@
 				INFOPLIST_FILE = XcodeServerSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -427,6 +485,7 @@
 				);
 				INFOPLIST_FILE = XcodeServerSDKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -441,6 +500,7 @@
 				);
 				INFOPLIST_FILE = XcodeServerSDKTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.honzadvorsky.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

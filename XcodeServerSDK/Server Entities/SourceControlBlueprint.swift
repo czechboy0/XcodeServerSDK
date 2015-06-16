@@ -11,7 +11,7 @@ import Foundation
 extension String {
     public var base64Encoded: String? {
         let data = dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        return data?.base64EncodedStringWithOptions(nil)
+        return data?.base64EncodedStringWithOptions(.EncodingEndLineWithLineFeed)
     }
 }
 
@@ -86,7 +86,7 @@ public class SourceControlBlueprint : XcodeServerEntity {
     
     public override func dictionarify() -> NSDictionary {
         
-        var dictionary = NSMutableDictionary()
+        let dictionary = NSMutableDictionary()
         
         let repoId = self.projectWCCIdentifier
         let remoteUrl = self.projectURL

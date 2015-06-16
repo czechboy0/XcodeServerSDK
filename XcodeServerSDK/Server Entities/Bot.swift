@@ -37,7 +37,7 @@ public class Bot : XcodeServerEntity {
 
     public override func dictionarify() -> NSDictionary {
         
-        var dictionary = NSMutableDictionary()
+        let dictionary = NSMutableDictionary()
         
         //name
         dictionary["name"] = self.name

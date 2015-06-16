@@ -13,7 +13,6 @@ public class HTTPServer : NSObject {
     public let http: HTTP
     
     public init(http: HTTP? = nil) {
-        
         self.http = http ?? HTTP()
     }
     
