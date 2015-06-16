@@ -5,13 +5,21 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
+<<<<<<< HEAD
 	<string>7EC5B1D3-5495-4EFB-BBC9-FC32790D444C</string>
+=======
+	<string>1D9650B0-8D54-46C2-BCB1-C46BB6D63901</string>
+>>>>>>> master
 	<key>IDESourceControlProjectName</key>
 	<string>XcodeServerSDK</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>A36AEFA3F9FF1F738E92F0C497C14977DCE02B97</key>
+<<<<<<< HEAD
 		<string>https://github.com/cojoj/XcodeServerSDK.git</string>
+=======
+		<string>github.com:czechboy0/XcodeServerSDK.git</string>
+>>>>>>> master
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>XcodeServerSDK.xcodeproj</string>
@@ -21,7 +29,11 @@
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
+<<<<<<< HEAD
 	<string>https://github.com/cojoj/XcodeServerSDK.git</string>
+=======
+	<string>github.com:czechboy0/XcodeServerSDK.git</string>
+>>>>>>> master
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
