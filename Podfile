@@ -3,6 +3,7 @@ use_frameworks!
 
 def utils
 	pod 'BuildaUtils', '0.1.0'
+	pod 'ReactiveCocoa', '4.0.2-alpha-1'
 end
 
 def tests

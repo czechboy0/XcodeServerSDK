@@ -200,7 +200,7 @@ extension XcodeServer {
     - parameter success:       Optional Integration Issues object with result.
     - parameter error:         Optional operation error.
     */
-    public final func getIntegrationIssues(integrationId: String, completion: (integrationIssues: IntegrationIssues?, error: ErrorType?) ->()) {
+    public final func getIntegrationIssues(integrationId: String, completion: (integrationIssues: IntegrationIssues?, error: ErrorType?) -> ()) {
         
         let params = [
             "integration": integrationId

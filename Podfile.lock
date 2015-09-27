@@ -2,11 +2,24 @@ PODS:
   - BuildaUtils (0.1.0)
   - DVR (0.0.4-czechboy0)
   - Nimble (2.0.0-rc.3)
+  - ReactiveCocoa (4.0.2-alpha-1):
+    - ReactiveCocoa/UI (= 4.0.2-alpha-1)
+    - Result (~> 0.6-beta.1)
+  - ReactiveCocoa/Core (4.0.2-alpha-1):
+    - ReactiveCocoa/no-arc
+    - Result (~> 0.6-beta.1)
+  - ReactiveCocoa/no-arc (4.0.2-alpha-1):
+    - Result (~> 0.6-beta.1)
+  - ReactiveCocoa/UI (4.0.2-alpha-1):
+    - ReactiveCocoa/Core
+    - Result (~> 0.6-beta.1)
+  - Result (0.6-beta.1)
 
 DEPENDENCIES:
   - BuildaUtils (= 0.1.0)
   - DVR (from `https://github.com/czechboy0/DVR.git`, tag `v0.0.5-czechboy0`)
   - Nimble (= 2.0.0-rc.3)
+  - ReactiveCocoa (= 4.0.2-alpha-1)
 
 EXTERNAL SOURCES:
   DVR:
@@ -22,5 +35,7 @@ SPEC CHECKSUMS:
   BuildaUtils: cf7756290492ca286935d996c8bf4a3085662514
   DVR: 386f347071f55f3f9105239db6764483009ec875
   Nimble: 9dff98ee195ffe7351d3b2fb01d3a1420fd97948
+  ReactiveCocoa: 652cf90e5de65708e7e2111f77405756da21aabe
+  Result: af24e3e57ab81005ec4221a53fd36dc1e7a52869
 
 COCOAPODS: 0.38.2
