@@ -11,7 +11,7 @@ import XcodeServerSDK
 
 class RepositoryTests: XCTestCase {
     
-    let json = [
+    let json: [String: Any] = [
         "readAccessExternalIDs": [],
         "writeAccessExternalIDs": [
             "FDF283F5-B9C3-4B43-9000-EF6A54934D4E",
@@ -82,7 +82,7 @@ class RepositoryTests: XCTestCase {
     
     // MARK: API Routes tests
     func testGetRepositories() {
-        let expectation = self.expectationWithDescription("Get Repositories")
+        let expectation = self.expectation(description: "Get Repositories")
         let server = self.getRecordingXcodeServer("get_repositories")
         
         server.getRepositories() { (repositories, error) in
@@ -106,7 +106,7 @@ class RepositoryTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10.0, handler: nil)
+        self.waitForExpectations(timeout: 10.0, handler: nil)
     }
 
 }

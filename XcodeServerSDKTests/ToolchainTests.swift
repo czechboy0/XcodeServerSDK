@@ -12,7 +12,7 @@ import XcodeServerSDK
 class ToolchainTest: XCTestCase {
     
     func testGetToolchains() {
-        let expectation = self.expectationWithDescription("Get Toolchains")
+        let expectation = self.expectation(description: "Get Toolchains")
         let server = self.getRecordingXcodeServer("get_toolchains")
         
         server.getToolchains { (toolchains, error) -> () in
@@ -31,6 +31,6 @@ class ToolchainTest: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10.0, handler: nil)
+        self.waitForExpectations(timeout: 10.0, handler: nil)
     }
 }

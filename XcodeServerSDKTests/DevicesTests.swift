@@ -42,7 +42,7 @@ class DevicesTests: XCTestCase {
     }
     
     func testGetDevices() {
-        let expectation = self.expectationWithDescription("Get Devices")
+        let expectation = self.expectation(description: "Get Devices")
         let server = self.getRecordingXcodeServer("get_devices")
         
         server.getDevices { (devices, error) -> () in
@@ -61,7 +61,7 @@ class DevicesTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10.0, handler: nil)
+        self.waitForExpectations(timeout: 10.0, handler: nil)
     }
     
 }

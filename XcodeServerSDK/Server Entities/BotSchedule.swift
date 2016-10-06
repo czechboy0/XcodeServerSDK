@@ -8,56 +8,56 @@
 
 import Foundation
 
-public class BotSchedule : XcodeServerEntity {
+open class BotSchedule : XcodeServerEntity {
     
     public enum Schedule : Int {
         
-        case Periodical = 1
-        case Commit
-        case Manual
+        case periodical = 1
+        case commit
+        case manual
         
         public func toString() -> String {
             switch self {
-            case .Periodical:
+            case .periodical:
                 return "Periodical"
-            case .Commit:
+            case .commit:
                 return "On Commit"
-            case .Manual:
+            case .manual:
                 return "Manual"
             }
         }
     }
     
     public enum Period : Int {
-        case Hourly = 1
-        case Daily
-        case Weekly
+        case hourly = 1
+        case daily
+        case weekly
     }
     
     public enum Day : Int {
-        case Monday = 1
-        case Tuesday
-        case Wednesday
-        case Thursday
-        case Friday
-        case Saturday
-        case Sunday
+        case monday = 1
+        case tuesday
+        case wednesday
+        case thursday
+        case friday
+        case saturday
+        case sunday
     }
     
-    public let schedule: Schedule!
+    open let schedule: Schedule!
     
-    public let period: Period?
+    open let period: Period?
     
-    public let day: Day!
-    public let hours: Int!
-    public let minutes: Int!
+    open let day: Day!
+    open let hours: Int!
+    open let minutes: Int!
     
     public required init(json: NSDictionary) throws {
         
         let schedule = Schedule(rawValue: try json.intForKey("scheduleType"))!
         self.schedule = schedule
         
-        if schedule == .Periodical {
+        if schedule == .periodical {
             
             let period = Period(rawValue: try json.intForKey("periodicScheduleInterval"))!
             self.period = period
@@ -66,15 +66,15 @@ public class BotSchedule : XcodeServerEntity {
             let hours = json.optionalIntForKey("hourOfIntegration")
             
             switch period {
-            case .Hourly:
+            case .hourly:
                 self.minutes = minutes!
                 self.hours = nil
                 self.day = nil
-            case .Daily:
+            case .daily:
                 self.minutes = minutes!
                 self.hours = hours!
                 self.day = nil
-            case .Weekly:
+            case .weekly:
                 self.minutes = minutes!
                 self.hours = hours!
                 self.day = Day(rawValue: try json.intForKey("weeklyScheduleDay"))
@@ -89,7 +89,7 @@ public class BotSchedule : XcodeServerEntity {
         try super.init(json: json)
     }
     
-    private init(schedule: Schedule, period: Period?, day: Day?, hours: Int?, minutes: Int?) {
+    fileprivate init(schedule: Schedule, period: Period?, day: Day?, hours: Int?, minutes: Int?) {
         
         self.schedule = schedule
         self.period = period
@@ -100,17 +100,17 @@ public class BotSchedule : XcodeServerEntity {
         super.init()
     }
     
-    public class func manualBotSchedule() -> BotSchedule {
-        return BotSchedule(schedule: .Manual, period: nil, day: nil, hours: nil, minutes: nil)
+    open class func manualBotSchedule() -> BotSchedule {
+        return BotSchedule(schedule: .manual, period: nil, day: nil, hours: nil, minutes: nil)
     }
     
-    public class func commitBotSchedule() -> BotSchedule {
-        return BotSchedule(schedule: .Commit, period: nil, day: nil, hours: nil, minutes: nil)
+    open class func commitBotSchedule() -> BotSchedule {
+        return BotSchedule(schedule: .commit, period: nil, day: nil, hours: nil, minutes: nil)
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
-        let dictionary = NSMutableDictionary()
+        var dictionary: [String: Any] = [:]
         
         dictionary["scheduleType"] = self.schedule.rawValue
         dictionary["periodicScheduleInterval"] = self.period?.rawValue ?? 0

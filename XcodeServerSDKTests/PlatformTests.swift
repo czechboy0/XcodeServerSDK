@@ -12,7 +12,7 @@ import XcodeServerSDK
 class PlatformTests: XCTestCase {
 
     func testGetPlatforms() {
-        let expectation = self.expectationWithDescription("Get Platforms")
+        let expectation = self.expectation(description: "Get Platforms")
         let server = self.getRecordingXcodeServer("get_platforms")
         
         server.getPlatforms { (platforms, error) -> () in
@@ -31,7 +31,7 @@ class PlatformTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10.0, handler: nil)
+        self.waitForExpectations(timeout: 10.0, handler: nil)
     }
 
 }

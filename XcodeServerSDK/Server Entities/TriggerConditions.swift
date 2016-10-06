@@ -8,15 +8,15 @@
 
 import Foundation
 
-public class TriggerConditions : XcodeServerEntity {
+open class TriggerConditions : XcodeServerEntity {
     
-    public let status: Int
-    public let onAnalyzerWarnings: Bool
-    public let onBuildErrors: Bool
-    public let onFailingTests: Bool
-    public let onInternalErrors: Bool
-    public let onSuccess: Bool
-    public let onWarnings: Bool
+    open let status: Int
+    open let onAnalyzerWarnings: Bool
+    open let onBuildErrors: Bool
+    open let onFailingTests: Bool
+    open let onInternalErrors: Bool
+    open let onSuccess: Bool
+    open let onWarnings: Bool
     
     public init(status: Int = 2, onAnalyzerWarnings: Bool, onBuildErrors: Bool, onFailingTests: Bool, onInternalErrors: Bool, onSuccess: Bool, onWarnings: Bool) {
         
@@ -31,9 +31,9 @@ public class TriggerConditions : XcodeServerEntity {
         super.init()
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
-        let dict = NSMutableDictionary()
+        var dict: [String: Any] = [:]
         
         dict["status"] = self.status
         dict["onAnalyzerWarnings"] = self.onAnalyzerWarnings

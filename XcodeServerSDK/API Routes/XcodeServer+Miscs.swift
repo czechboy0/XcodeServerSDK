@@ -16,19 +16,19 @@ extension XcodeServer {
     /**
     XCS API call for retrieving its canonical hostname.
     */
-    public final func getHostname(completion: (hostname: String?, error: NSError?) -> ()) {
+    public final func getHostname(_ completion: @escaping (_ hostname: String?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .Hostname, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.GET, endpoint: .hostname, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
-                completion(hostname: nil, error: error)
+                completion(nil, error)
                 return
             }
             
             if let hostname = (body as? NSDictionary)?["hostname"] as? String {
-                completion(hostname: hostname, error: nil)
+                completion(hostname, nil)
             } else {
-                completion(hostname: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
             }
         }
     }

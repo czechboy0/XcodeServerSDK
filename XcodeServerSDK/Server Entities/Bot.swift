@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class Bot : XcodeServerEntity {
+open class Bot : XcodeServerEntity {
     
-    public let name: String
-    public let configuration: BotConfiguration
-    public let integrationsCount: Int
+    open let name: String
+    open let configuration: BotConfiguration
+    open let integrationsCount: Int
 
     public required init(json: NSDictionary) throws {
         
@@ -35,9 +35,9 @@ public class Bot : XcodeServerEntity {
         super.init()
     }
 
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
-        let dictionary = NSMutableDictionary()
+        var dictionary: [String: Any] = [:]
         
         //name
         dictionary["name"] = self.name
@@ -49,7 +49,7 @@ public class Bot : XcodeServerEntity {
         dictionary["type"] = 1 //magic more
         dictionary["requiresUpgrade"] = false
         dictionary["group"] = [
-            "name": NSUUID().UUIDString
+            "name": UUID().uuidString
         ]
         
         return dictionary

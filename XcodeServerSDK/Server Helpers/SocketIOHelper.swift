@@ -16,33 +16,33 @@ also helped: https://github.com/Crphang/Roadents/blob/df59d10bd102f04962e933f9a4
 public struct SocketIOPacket {
     
     public enum PacketType: Int {
-        case Disconnect = 0
-        case Connect = 1
-        case Heartbeat = 2
-        case Message = 3
-        case JSON = 4
-        case Event = 5
-        case Ack = 6
-        case Error = 7
-        case Noop = 8
+        case disconnect = 0
+        case connect = 1
+        case heartbeat = 2
+        case message = 3
+        case json = 4
+        case event = 5
+        case ack = 6
+        case error = 7
+        case noop = 8
     }
     
     public enum ErrorReason: Int {
-        case TransportNotSupported = 0
-        case ClientNotHandshaken = 1
-        case Unauthorized = 2
+        case transportNotSupported = 0
+        case clientNotHandshaken = 1
+        case unauthorized = 2
     }
     
     public enum ErrorAdvice: Int {
-        case Reconnect = 0
+        case reconnect = 0
     }
 
-    private let dataString: String
+    fileprivate let dataString: String
     public let type: PacketType
     public let stringPayload: String
     public var jsonPayload: NSDictionary? {
-        guard let data = self.stringPayload.dataUsingEncoding(NSUTF8StringEncoding) else { return nil }
-        let obj = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions())
+        guard let data = self.stringPayload.data(using: String.Encoding.utf8) else { return nil }
+        let obj = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions())
         let dict = obj as? NSDictionary
         return dict
     }
@@ -53,7 +53,7 @@ public struct SocketIOPacket {
         (self.type, self.stringPayload) = comps
     }
     
-    private static func countInitialColons(data: String) -> Int {
+    fileprivate static func countInitialColons(_ data: String) -> Int {
         var initialColonsCount = 0
         for i in data.characters {
             if i == ":" {
@@ -67,14 +67,14 @@ public struct SocketIOPacket {
         return initialColonsCount
     }
     
-    private static func parseComps(data: String) -> (type: PacketType, stringPayload: String)? {
+    fileprivate static func parseComps(_ data: String) -> (type: PacketType, stringPayload: String)? {
         
         //find the initial sequence of colons and count them, to know how to split the packet
         let initialColonsCount = self.countInitialColons(data)
-        let splitter = String(count: initialColonsCount, repeatedValue: Character(":"))
+        let splitter = String(repeating: ":", count: initialColonsCount)
         
         let comps = data
-            .componentsSeparatedByString(splitter)
+            .components(separatedBy: splitter)
             .filter { $0.characters.count > 0 }
         guard comps.count > 0 else { return nil }
         guard
@@ -88,7 +88,7 @@ public struct SocketIOPacket {
     
     //e.g. "7:::1+0"
     public func parseError() -> (reason: ErrorReason?, advice: ErrorAdvice?) {
-        let comps = self.stringPayload.componentsSeparatedByString("+")
+        let comps = self.stringPayload.components(separatedBy: "+")
         let reasonString = comps.first ?? ""
         let reasonInt = Int(reasonString) ?? -1
         let adviceString = comps.count == 2 ? comps.last! : ""
@@ -99,16 +99,16 @@ public struct SocketIOPacket {
     }
 }
 
-public class SocketIOHelper {
+open class SocketIOHelper {
     
-    public static func parsePackets(message: String) -> [SocketIOPacket] {
+    open static func parsePackets(_ message: String) -> [SocketIOPacket] {
         
         let packetStrings = self.parsePacketStrings(message)
         let packets = packetStrings.map { SocketIOPacket(data: $0) }.filter { $0 != nil }.map { $0! }
         return packets
     }
     
-    private static func parsePacketStrings(message: String) -> [String] {
+    fileprivate static func parsePacketStrings(_ message: String) -> [String] {
         
         // Sometimes Socket.IO "batches" up messages in one packet, so we have to split them.
         // "Batched" format is:
@@ -117,9 +117,9 @@ public class SocketIOHelper {
         guard message.hasPrefix(splitChar) else { return [message] }
         
         let comps = message
-            .substringFromIndex(message.startIndex.advancedBy(1))
-            .componentsSeparatedByString(splitChar)
-            .filter { $0.componentsSeparatedByString(":::").count > 1 }
+            .substring(from: message.characters.index(message.startIndex, offsetBy: 1))
+            .components(separatedBy: splitChar)
+            .filter { $0.components(separatedBy: ":::").count > 1 }
         return comps
     }
 }

@@ -11,7 +11,7 @@ import XCTest
 import XcodeServerSDK
 import DVR
 
-struct StringError: ErrorType {
+struct StringError: Error {
     
     let description: String
     let _domain: String = ""
@@ -24,7 +24,7 @@ struct StringError: ErrorType {
 
 extension XCTestCase {
     
-    func getRecordingXcodeServer(cassetteName: String) -> XcodeServer {
+    func getRecordingXcodeServer(_ cassetteName: String) -> XcodeServer {
         
         let config = try! XcodeServerConfig(
             host: "https://127.0.0.1",
@@ -33,12 +33,12 @@ extension XCTestCase {
         return self.getRecordingXcodeServerWithConfig(config, cassetteName: cassetteName)
     }
     
-    func getRecordingXcodeServerWithConfig(config: XcodeServerConfig, cassetteName: String) -> XcodeServer
+    func getRecordingXcodeServerWithConfig(_ config: XcodeServerConfig, cassetteName: String) -> XcodeServer
     {
         let server = XcodeServerFactory.server(config)
         let backingSession = server.http.session
         
-        let session = DVR.Session(cassetteName: cassetteName, testBundle: NSBundle(forClass: self.classForCoder), backingSession: backingSession)
+        let session = DVR.Session(cassetteName: cassetteName, testBundle: Bundle(forClass: self.classForCoder), backingSession: backingSession)
         server.http.session = session
         
         return server
@@ -48,11 +48,11 @@ extension XCTestCase {
 // MARK: Mock JSON helper methods
 extension XCTestCase {
     
-    func stringAtPath(path: String) -> String {
-        return try! NSString(contentsOfFile: (path as NSString).stringByExpandingTildeInPath, encoding: NSUTF8StringEncoding) as String
+    func stringAtPath(_ path: String) -> String {
+        return try! NSString(contentsOfFile: (path as NSString).expandingTildeInPath, encoding: String.Encoding.utf8.rawValue) as String
     }
     
-    func loadJSONResponseFromCassetteWithName(name: String) -> NSDictionary {
+    func loadJSONResponseFromCassetteWithName(_ name: String) -> NSDictionary {
         
         let dictionary = self.loadJSONWithName(name)
         
@@ -67,15 +67,15 @@ extension XCTestCase {
         return body
     }
     
-    func loadJSONWithName(name: String) -> NSDictionary {
+    func loadJSONWithName(_ name: String) -> NSDictionary {
         
-        let bundle = NSBundle(forClass: BotParsingTests.classForCoder())
+        let bundle = Bundle(for: BotParsingTests.classForCoder())
         do {
             
-            if let url = bundle.URLForResource(name, withExtension: "json") {
+            if let url = bundle.url(forResource: name, withExtension: "json") {
                 
-                let data = try NSData(contentsOfURL: url, options: NSDataReadingOptions())                
-                if let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions()) as? NSDictionary {
+                let data = try Data(contentsOf: url, options: NSData.ReadingOptions())                
+                if let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions()) as? NSDictionary {
                     return json
                 }
                 
@@ -89,19 +89,19 @@ extension XCTestCase {
         return NSDictionary()
     }
     
-    func botInCassetteWithName(name: String) throws -> Bot {
+    func botInCassetteWithName(_ name: String) throws -> Bot {
         let json = self.loadJSONResponseFromCassetteWithName(name)
         let bot = try Bot(json: json)
         return bot
     }
     
-    func botInFileWithName(name: String) throws -> Bot {
+    func botInFileWithName(_ name: String) throws -> Bot {
         let json = self.loadJSONWithName(name)
         let bot = try Bot(json: json)
         return bot
     }
     
-    func configurationFromBotWithName(name: String) throws -> BotConfiguration {
+    func configurationFromBotWithName(_ name: String) throws -> BotConfiguration {
         let bot = try self.botInFileWithName(name)
         let configuration = bot.configuration
         return configuration
@@ -119,7 +119,7 @@ extension XCTestCase {
     - parameter line:    Line in which assertion happened
     - parameter block:   Block of code against which assertion should be matched
     */
-    func XCTempAssertThrowsError(message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
+    func XCTempAssertThrowsError(_ message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
         do {
             try block()
             
@@ -137,7 +137,7 @@ extension XCTestCase {
     - parameter line:    Line in which assertion happened
     - parameter block:   Block of code against which assertion should be matched
     */
-    func XCTempAssertThrowsSpecificError(kind: ErrorType, _ message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
+    func XCTempAssertThrowsSpecificError(_ kind: Error, _ message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
         do {
             try block()
             
@@ -160,7 +160,7 @@ extension XCTestCase {
     - parameter line:    Line in which assertion happened
     - parameter block:   Block of code against which assertion should be matched
     */
-    func XCTempAssertNoThrowError(message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
+    func XCTempAssertNoThrowError(_ message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
         do {
             try block()
         } catch {
@@ -178,7 +178,7 @@ extension XCTestCase {
     - parameter line:    Line in which assertion happened
     - parameter block:   Block of code against which assertion should be matched
     */
-    func XCTempAssertNoThrowSpecificError(kind: ErrorType, _ message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
+    func XCTempAssertNoThrowSpecificError(_ kind: Error, _ message: String = "", file: StaticString = #file, line: UInt = #line, _ block: () throws -> ()) {
         do {
             try block()
         } catch let error as NSError {

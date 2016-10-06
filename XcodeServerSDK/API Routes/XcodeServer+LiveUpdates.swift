@@ -12,12 +12,12 @@ import BuildaUtils
 // MARK: - XcodeSever API Routes for Live Updates
 extension XcodeServer {
     
-    public typealias MessageHandler = (messages: [LiveUpdateMessage]) -> ()
+    public typealias MessageHandler = (_ messages: [LiveUpdateMessage]) -> ()
     public typealias StopHandler = () -> ()
-    public typealias ErrorHandler = (error: ErrorType) -> ()
+    public typealias ErrorHandler = (_ error: Error) -> ()
     
-    private class LiveUpdateState {
-        var task: NSURLSessionTask?
+    fileprivate class LiveUpdateState {
+        var task: URLSessionTask?
         var messageHandler: MessageHandler?
         var errorHandler: ErrorHandler?
         var pollId: String?
@@ -29,9 +29,9 @@ extension XcodeServer {
             self.terminated = true
         }
         
-        func error(error: ErrorType) {
+        func error(_ error: Error) {
             self.cancel()
-            self.errorHandler?(error: error)
+            self.errorHandler?(error)
         }
         
         deinit {
@@ -42,7 +42,7 @@ extension XcodeServer {
     /**
     *   Returns StopHandler - call it when you want to stop receiving updates.
     */
-    public func startListeningForLiveUpdates(message: MessageHandler, error: ErrorHandler? = nil) -> StopHandler {
+    public func startListeningForLiveUpdates(_ message: @escaping MessageHandler, error: ErrorHandler? = nil) -> StopHandler {
         
         let state = LiveUpdateState()
         state.errorHandler = error
@@ -53,17 +53,17 @@ extension XcodeServer {
         }
     }
     
-    private func queryWithTimestamp() -> [String: String] {
-        let timestamp = Int(NSDate().timeIntervalSince1970)*1000
+    fileprivate func queryWithTimestamp() -> [String: String] {
+        let timestamp = Int(Date().timeIntervalSince1970)*1000
         return [
             "t": "\(timestamp)"
         ]
     }
     
-    private func sendRequest(state: LiveUpdateState, params: [String: String]?, completion: (message: String) -> ()) {
+    fileprivate func sendRequest(_ state: LiveUpdateState, params: [String: String]?, completion: @escaping (_ message: String) -> ()) {
         
         let query = queryWithTimestamp()
-        let task = self.sendRequestWithMethod(.GET, endpoint: .LiveUpdates, params: params, query: query, body: nil, portOverride: 443) {
+        let task = self.sendRequestWithMethod(.GET, endpoint: .liveUpdates, params: params, query: query, body: nil, portOverride: 443) {
             (response, body, error) -> () in
             
             if let error = error {
@@ -72,33 +72,33 @@ extension XcodeServer {
             }
             
             guard let message = body as? String else {
-                let e = Error.withInfo("Wrong body: \(body)")
+                let e = MyError.withInfo("Wrong body: \(body)")
                 state.error(e)
                 return
             }
             
-            completion(message: message)
+            completion(message)
         }
         state.task = task
     }
     
-    private func startPolling(state: LiveUpdateState) {
+    fileprivate func startPolling(_ state: LiveUpdateState) {
         
         self.sendRequest(state, params: nil) { [weak self] (message) -> () in
             self?.processInitialResponse(message, state: state)
         }
     }
     
-    private func processInitialResponse(initial: String, state: LiveUpdateState) {
-        if let pollId = initial.componentsSeparatedByString(":").first {
+    fileprivate func processInitialResponse(_ initial: String, state: LiveUpdateState) {
+        if let pollId = initial.components(separatedBy: ":").first {
             state.pollId = pollId
             self.poll(state)
         } else {
-            state.error(Error.withInfo("Unexpected initial poll message: \(initial)"))
+            state.error(MyError.withInfo("Unexpected initial poll message: \(initial)"))
         }
     }
     
-    private func poll(state: LiveUpdateState) {
+    fileprivate func poll(_ state: LiveUpdateState) {
         precondition(state.pollId != nil)
         let params = [
             "poll_id": state.pollId!
@@ -116,14 +116,14 @@ extension XcodeServer {
         }
     }
     
-    private func handlePackets(packets: [SocketIOPacket], state: LiveUpdateState) throws {
+    fileprivate func handlePackets(_ packets: [SocketIOPacket], state: LiveUpdateState) throws {
         
         //check for errors
-        if let lastPacket = packets.last where lastPacket.type == .Error {
+        if let lastPacket = packets.last , lastPacket.type == .error {
             let (_, advice) = lastPacket.parseError()
             if
                 let advice = advice,
-                case .Reconnect = advice {
+                case .reconnect = advice {
                     //reconnect!
                     self.startPolling(state)
                     return
@@ -132,11 +132,11 @@ extension XcodeServer {
         }
         
         //we good?
-        let events = packets.filter { $0.type == .Event }
+        let events = packets.filter { $0.type == .event }
         let validEvents = events.filter { $0.jsonPayload != nil }
         let messages = try validEvents.map { try LiveUpdateMessage(json: $0.jsonPayload!) }
         if messages.count > 0 {
-            state.messageHandler?(messages: messages)
+            state.messageHandler?(messages)
         }
         if !state.terminated {
             self.poll(state)
