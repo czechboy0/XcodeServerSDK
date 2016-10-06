@@ -13,11 +13,11 @@ let kContributorName = "XCSContributorName"
 let kContributorDisplayName = "XCSContributorDisplayName"
 let kContributorEmails = "XCSContributorEmails"
 
-public class Contributor: XcodeServerEntity {
+open class Contributor: XcodeServerEntity {
     
-    public let name: String
-    public let displayName: String
-    public let emails: [String]
+    open let name: String
+    open let displayName: String
+    open let emails: [String]
     
     public required init(json: NSDictionary) throws {
         self.name = try json.stringForKey(kContributorName)
@@ -27,7 +27,7 @@ public class Contributor: XcodeServerEntity {
         try super.init(json: json)
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         return [
             kContributorName: self.name,
             kContributorDisplayName: self.displayName,
@@ -35,7 +35,7 @@ public class Contributor: XcodeServerEntity {
         ]
     }
     
-    public func description() -> String {
+    open func description() -> String {
         return "\(displayName) [\(emails[0])]"
     }
     

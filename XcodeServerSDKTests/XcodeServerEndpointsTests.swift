@@ -28,10 +28,10 @@ class XcodeServerEndpointsTests: XCTestCase {
     }
     
     func testRequestCreationForEmptyAuthorizationParams() {
-        let expectedUrl = NSURL(string: "https://127.0.0.1:20343/api/bots/bot_id/integrations")
-        let expectedRequest = NSMutableURLRequest(URL: expectedUrl!)
+        let expectedUrl = URL(string: "https://127.0.0.1:20343/api/bots/bot_id/integrations")
+        let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.HTTPMethod = "GET"
+        expectedRequest.httpMethod = "GET"
         // Authorization header: "": ""
         expectedRequest.setValue("Basic Og==", forHTTPHeaderField: "Authorization")
         
@@ -42,10 +42,10 @@ class XcodeServerEndpointsTests: XCTestCase {
     }
     
     func testGETRequestCreation() {
-        let expectedUrl = NSURL(string: "https://127.0.0.1:20343/api/bots/bot_id/integrations?format=json")
-        let expectedRequest = NSMutableURLRequest(URL: expectedUrl!)
+        let expectedUrl = URL(string: "https://127.0.0.1:20343/api/bots/bot_id/integrations?format=json")
+        let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.HTTPMethod = "GET"
+        expectedRequest.httpMethod = "GET"
         // Authorization header: "test": "test"
         expectedRequest.setValue("Basic dGVzdDp0ZXN0", forHTTPHeaderField: "Authorization")
         
@@ -54,13 +54,13 @@ class XcodeServerEndpointsTests: XCTestCase {
     }
     
     func testPOSTRequestCreation() {
-        let expectedUrl = NSURL(string: "https://127.0.0.1:20343/api/auth/logout")
-        let expectedRequest = NSMutableURLRequest(URL: expectedUrl!)
+        let expectedUrl = URL(string: "https://127.0.0.1:20343/api/auth/logout")
+        let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.HTTPMethod = "POST"
+        expectedRequest.httpMethod = "POST"
         // HTTPBody
-        let expectedData = "{\n  \"bodyParam\" : \"bodyValue\"\n}".dataUsingEncoding(NSUTF8StringEncoding)
-        expectedRequest.HTTPBody = expectedData!
+        let expectedData = "{\n  \"bodyParam\" : \"bodyValue\"\n}".data(using: String.Encoding.utf8)
+        expectedRequest.httpBody = expectedData!
         expectedRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let request = self.endpoints?.createRequest(.POST, endpoint: .Logout, params: nil, query: nil, body: ["bodyParam": "bodyValue"], doBasicAuth: false)
@@ -69,10 +69,10 @@ class XcodeServerEndpointsTests: XCTestCase {
     }
     
     func testDELETERequestCreation() {
-        let expectedUrl = NSURL(string: "https://127.0.0.1:20343/api/bots/bot_id/rev_id")
-        let expectedRequest = NSMutableURLRequest(URL: expectedUrl!)
+        let expectedUrl = URL(string: "https://127.0.0.1:20343/api/bots/bot_id/rev_id")
+        let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.HTTPMethod = "DELETE"
+        expectedRequest.httpMethod = "DELETE"
         
         let request = self.endpoints?.createRequest(.DELETE, endpoint: .Bots, params: ["bot": "bot_id", "rev": "rev_id"], query: nil, body: nil, doBasicAuth: false)
         XCTAssertEqual(expectedRequest, request!)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class IntegrationIssue: XcodeServerEntity {
+open class IntegrationIssue: XcodeServerEntity {
     
     public enum IssueType: String {
         case BuildServiceError = "buildServiceError"
@@ -21,22 +21,22 @@ public class IntegrationIssue: XcodeServerEntity {
     }
     
     public enum IssueStatus: Int {
-        case Fresh = 0
-        case Unresolved
-        case Resolved
-        case Silenced
+        case fresh = 0
+        case unresolved
+        case resolved
+        case silenced
     }
     
     /// Payload is holding whole Dictionary of the Issue
-    public let payload: NSDictionary
+    open let payload: NSDictionary
     
-    public let message: String?
-    public let type: IssueType
-    public let issueType: String
-    public let commits: [Commit]
-    public let integrationID: String
-    public let age: Int
-    public let status: IssueStatus
+    open let message: String?
+    open let type: IssueType
+    open let issueType: String
+    open let commits: [Commit]
+    open let integrationID: String
+    open let age: Int
+    open let status: IssueStatus
     
     // MARK: Initialization
     public required init(json: NSDictionary) throws {

@@ -11,12 +11,12 @@ import XCTest
 
 class FileTests: XCTestCase {
     
-    let sampleAdded = [
+    let sampleAdded: [String : Any] = [
         "status": 1,
         "filePath": "File1.swift"
     ]
     
-    let sampleOther = [
+    let sampleOther: [String : Any] = [
         "status": 1024,
         "filePath": "File2.swift"
     ]

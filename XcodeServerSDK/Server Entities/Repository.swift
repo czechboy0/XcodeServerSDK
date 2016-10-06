@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Repository: XcodeServerEntity {
+open class Repository: XcodeServerEntity {
     
     /**
     Enumeration describing HTTP access to the repository
@@ -18,14 +18,14 @@ public class Repository: XcodeServerEntity {
     */
     public enum HTTPAccessType: Int {
         
-        case None = 0
-        case LoggedIn
+        case none = 0
+        case loggedIn
         
         public func toString() -> String {
             switch self {
-            case .None:
+            case .none:
                 return "No users are not allowed to read or write"
-            case .LoggedIn:
+            case .loggedIn:
                 return "Logged in users are allowed to read and write"
             }
         }
@@ -41,30 +41,30 @@ public class Repository: XcodeServerEntity {
     */
     public enum SSHAccessType: Int {
         
-        case SelectedReadWrite = 0
-        case LoggedInReadSelectedWrite
-        case LoggedInReadWrite
+        case selectedReadWrite = 0
+        case loggedInReadSelectedWrite
+        case loggedInReadWrite
         
         public func toString() -> String {
             switch self {
-            case .SelectedReadWrite:
+            case .selectedReadWrite:
                 return "Only selected users can read and/or write"
-            case .LoggedInReadSelectedWrite:
+            case .loggedInReadSelectedWrite:
                 return "Only selected users can write but all logged in can read"
-            case .LoggedInReadWrite:
+            case .loggedInReadWrite:
                 return "All logged in users can read and write"
             }
         }
         
     }
     
-    public let name: String
-    public var httpAccess: HTTPAccessType = HTTPAccessType.None
+    open let name: String
+    open var httpAccess: HTTPAccessType = HTTPAccessType.none
     // XCS's defualt if SelectedReadWrite but if you don't provide 
     // array of IDs, nobody will have access to the repository
-    public var sshAccess: SSHAccessType = SSHAccessType.LoggedInReadWrite
-    public var writeAccessExternalIds: [String] = []
-    public var readAccessExternalIds: [String] = []
+    open var sshAccess: SSHAccessType = SSHAccessType.loggedInReadWrite
+    open var writeAccessExternalIds: [String] = []
+    open var readAccessExternalIds: [String] = []
     
     /**
     Designated initializer.
@@ -139,8 +139,8 @@ public class Repository: XcodeServerEntity {
     
     - returns: Dictionary representing JSON value of Repository object.
     */
-    public override func dictionarify() -> NSMutableDictionary {
-        let dict = NSMutableDictionary()
+    open override func dictionarify() -> [String: Any] {
+        var dict: [String: Any] = [:]
         
         dict["name"] = self.name
         dict["httpAccessType"] = self.httpAccess.rawValue

@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class XcodeServerFactory {
+open class XcodeServerFactory {
     
-    public class func server(config: XcodeServerConfig) -> XcodeServer {
+    open class func server(_ config: XcodeServerConfig) -> XcodeServer {
         
         let endpoints = XcodeServerEndpoints(serverConfig: config)
         let server = XcodeServer(config: config, endpoints: endpoints)

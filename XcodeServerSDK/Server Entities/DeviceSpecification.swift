@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class DevicePlatform : XcodeServerEntity {
+open class DevicePlatform : XcodeServerEntity {
     
-    public let displayName: String
-    public let version: String
+    open let displayName: String
+    open let version: String
     
     public enum PlatformType: String {
         case Unknown = "unknown"
@@ -30,8 +30,8 @@ public class DevicePlatform : XcodeServerEntity {
         case TV = "com.apple.platform.appletvsimulator"
     }
     
-    public let type: PlatformType
-    public let simulatorType: SimulatorType?
+    open let type: PlatformType
+    open let simulatorType: SimulatorType?
     
     public required init(json: NSDictionary) throws {
         
@@ -53,76 +53,76 @@ public class DevicePlatform : XcodeServerEntity {
         super.init()
     }
     
-    public class func OSX() -> DevicePlatform {
+    open class func OSX() -> DevicePlatform {
         return DevicePlatform(type: DevicePlatform.PlatformType.OSX)
     }
     
-    public class func iOS() -> DevicePlatform {
+    open class func iOS() -> DevicePlatform {
         return DevicePlatform(type: DevicePlatform.PlatformType.iOS)
     }
     
-    public class func watchOS() -> DevicePlatform {
+    open class func watchOS() -> DevicePlatform {
         return DevicePlatform(type: DevicePlatform.PlatformType.watchOS)
     }
     
-    public class func tvOS() -> DevicePlatform {
+    open class func tvOS() -> DevicePlatform {
         return DevicePlatform(type: DevicePlatform.PlatformType.tvOS)
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
         //in this case we want everything the way we parsed it.
         if let original = self.originalJSON {
             return original
         }
         
-        let dictionary = NSMutableDictionary()
+        var dictionary: [String: Any] = [:]
         
         dictionary["displayName"] = self.displayName
         dictionary["version"] = self.version
         dictionary["identifier"] = self.type.rawValue
-        dictionary.optionallyAddValueForKey(self.simulatorType?.rawValue, key: "simulatorIdentifier")
+        dictionary["simulatorIdentifier"] = simulatorType?.rawValue
         
         return dictionary
     }
 }
 
-public class DeviceFilter : XcodeServerEntity {
+open class DeviceFilter : XcodeServerEntity {
     
-    public var platform: DevicePlatform
+    open var platform: DevicePlatform
     
     public enum FilterType: Int {
-        case AllAvailableDevicesAndSimulators = 0
-        case AllDevices = 1
-        case AllSimulators = 2
-        case SelectedDevicesAndSimulators = 3
+        case allAvailableDevicesAndSimulators = 0
+        case allDevices = 1
+        case allSimulators = 2
+        case selectedDevicesAndSimulators = 3
         
         public func toString() -> String {
             switch self {
-            case .AllAvailableDevicesAndSimulators:
+            case .allAvailableDevicesAndSimulators:
                 return "All Available Devices and Simulators"
-            case .AllDevices:
+            case .allDevices:
                 return "All Devices"
-            case .AllSimulators:
+            case .allSimulators:
                 return "All Simulators"
-            case .SelectedDevicesAndSimulators:
+            case .selectedDevicesAndSimulators:
                 return "Selected Devices and Simulators"
             }
         }
         
-        public static func availableFiltersForPlatform(platformType: DevicePlatform.PlatformType) -> [FilterType] {
+        public static func availableFiltersForPlatform(_ platformType: DevicePlatform.PlatformType) -> [FilterType] {
             
             switch platformType {
             case .iOS, .tvOS:
                 return [
-                    .AllAvailableDevicesAndSimulators,
-                    .AllDevices,
-                    .AllSimulators,
-                    .SelectedDevicesAndSimulators
+                    .allAvailableDevicesAndSimulators,
+                    .allDevices,
+                    .allSimulators,
+                    .selectedDevicesAndSimulators
                 ]
             case .OSX, .watchOS:
                 return [
-                    .AllAvailableDevicesAndSimulators
+                    .allAvailableDevicesAndSimulators
                 ]
             default:
                 return []
@@ -130,31 +130,31 @@ public class DeviceFilter : XcodeServerEntity {
         }
     }
     
-    public let filterType: FilterType
+    open let filterType: FilterType
     
     public enum ArchitectureType: Int {
-        case Unknown = -1
+        case unknown = -1
         case iOS_Like = 0 //also watchOS and tvOS
-        case OSX_Like = 1
+        case osx_Like = 1
         
-        public static func architectureFromPlatformType(platformType: DevicePlatform.PlatformType) -> ArchitectureType {
+        public static func architectureFromPlatformType(_ platformType: DevicePlatform.PlatformType) -> ArchitectureType {
             
             switch platformType {
             case .iOS, .iOS_Simulator, .watchOS, .watchOS_Simulator, .tvOS, .tvOS_Simulator, .Unknown:
                 return .iOS_Like
             case .OSX:
-                return .OSX_Like
+                return .osx_Like
             }
         }
     }
     
-    public let architectureType: ArchitectureType //TODO: ditto, find out more.
+    open let architectureType: ArchitectureType //TODO: ditto, find out more.
     
     public required init(json: NSDictionary) throws {
         
         self.platform = try DevicePlatform(json: try json.dictionaryForKey("platform"))
-        self.filterType = FilterType(rawValue: try json.intForKey("filterType")) ?? .AllAvailableDevicesAndSimulators
-        self.architectureType = ArchitectureType(rawValue: json.optionalIntForKey("architectureType") ?? -1) ?? .Unknown
+        self.filterType = FilterType(rawValue: try json.intForKey("filterType")) ?? .allAvailableDevicesAndSimulators
+        self.architectureType = ArchitectureType(rawValue: json.optionalIntForKey("architectureType") ?? -1) ?? .unknown
         
         try super.init(json: json)
     }
@@ -167,7 +167,7 @@ public class DeviceFilter : XcodeServerEntity {
         super.init()
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
         return [
             "filterType": self.filterType.rawValue,
@@ -177,10 +177,10 @@ public class DeviceFilter : XcodeServerEntity {
     }
 }
 
-public class DeviceSpecification : XcodeServerEntity {
+open class DeviceSpecification : XcodeServerEntity {
     
-    public let deviceIdentifiers: [String]
-    public let filters: [DeviceFilter]
+    open let deviceIdentifiers: [String]
+    open let filters: [DeviceFilter]
     
     public required init(json: NSDictionary) throws {
         
@@ -209,7 +209,7 @@ public class DeviceSpecification : XcodeServerEntity {
         super.init()
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
         return [
             "deviceIdentifiers": self.deviceIdentifiers,
@@ -219,30 +219,30 @@ public class DeviceSpecification : XcodeServerEntity {
     
     // MARK: Convenience methods
     
-    public class func OSX() -> DeviceSpecification {
+    open class func OSX() -> DeviceSpecification {
         let platform = DevicePlatform.OSX()
-        let filter = DeviceFilter(platform: platform, filterType: .AllAvailableDevicesAndSimulators, architectureType: .OSX_Like)
+        let filter = DeviceFilter(platform: platform, filterType: .allAvailableDevicesAndSimulators, architectureType: .osx_Like)
         let spec = DeviceSpecification(filters: [filter], deviceIdentifiers: [])
         return spec
     }
     
-    public class func iOS(filterType: DeviceFilter.FilterType, deviceIdentifiers: [String]) -> DeviceSpecification {
+    open class func iOS(_ filterType: DeviceFilter.FilterType, deviceIdentifiers: [String]) -> DeviceSpecification {
         let platform = DevicePlatform.iOS()
         let filter = DeviceFilter(platform: platform, filterType: filterType, architectureType: .iOS_Like)
         let spec = DeviceSpecification(filters: [filter], deviceIdentifiers: deviceIdentifiers)
         return spec
     }
     
-    public class func watchOS() -> DeviceSpecification {
+    open class func watchOS() -> DeviceSpecification {
         let platform = DevicePlatform.watchOS()
-        let filter = DeviceFilter(platform: platform, filterType: .AllAvailableDevicesAndSimulators, architectureType: .iOS_Like)
+        let filter = DeviceFilter(platform: platform, filterType: .allAvailableDevicesAndSimulators, architectureType: .iOS_Like)
         let spec = DeviceSpecification(filters: [filter], deviceIdentifiers: [])
         return spec
     }
     
-    public class func tvOS() -> DeviceSpecification {
+    open class func tvOS() -> DeviceSpecification {
         let platform = DevicePlatform.tvOS()
-        let filter = DeviceFilter(platform: platform, filterType: .AllAvailableDevicesAndSimulators, architectureType: .iOS_Like)
+        let filter = DeviceFilter(platform: platform, filterType: .allAvailableDevicesAndSimulators, architectureType: .iOS_Like)
         let spec = DeviceSpecification(filters: [filter], deviceIdentifiers: [])
         return spec
     }
