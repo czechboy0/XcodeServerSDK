@@ -6,7 +6,7 @@ def utils
 end
 
 def tests
-	pod 'DVR', :git => 'https://github.com/czechboy0/DVR.git', :tag => 'v0.0.5-czechboy0'
+	pod 'DVR', :git => 'https://github.com/Sajjon/DVR.git'
 	pod 'Nimble', '~> 5.0'
 end
 
