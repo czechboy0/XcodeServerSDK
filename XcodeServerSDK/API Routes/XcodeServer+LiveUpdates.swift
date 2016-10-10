@@ -63,7 +63,7 @@ extension XcodeServer {
     fileprivate func sendRequest(_ state: LiveUpdateState, params: [String: String]?, completion: @escaping (_ message: String) -> ()) {
         
         let query = queryWithTimestamp()
-        let task = self.sendRequestWithMethod(.GET, endpoint: .liveUpdates, params: params, query: query, body: nil, portOverride: 443) {
+        let task = self.sendRequestWithMethod(.get, endpoint: .liveUpdates, params: params, query: query, body: nil, portOverride: 443) {
             (response, body, error) -> () in
             
             if let error = error {

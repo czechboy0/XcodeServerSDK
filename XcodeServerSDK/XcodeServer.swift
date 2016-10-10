@@ -111,7 +111,7 @@ public extension XcodeServer {
     - parameter endpoint:   API endpoint.
     - parameter params:     URL paramaters.
     - parameter query:      URL query.
-    - parameter body:       POST method request body.
+    - parameter body:       post method request body.
     - parameter completion: Completion.
     */
     @discardableResult

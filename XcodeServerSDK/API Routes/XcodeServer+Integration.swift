@@ -32,7 +32,7 @@ extension XcodeServer {
             "bot": botId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .integrations, params: params, query: query, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .integrations, params: params, query: query, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)
@@ -63,7 +63,7 @@ extension XcodeServer {
             "bot": botId
         ]
         
-        self.sendRequestWithMethod(.POST, endpoint: .integrations, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .integrations, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)
@@ -91,7 +91,7 @@ extension XcodeServer {
     */
     public final func getIntegrations(_ completion: @escaping (_ integrations: [Integration]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .integrations, params: nil, query: nil, body: nil) {
+        self.sendRequestWithMethod(.get, endpoint: .integrations, params: nil, query: nil, body: nil) {
             (response, body, error) -> () in
             
             guard error == nil else {
@@ -125,7 +125,7 @@ extension XcodeServer {
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .integrations, params: params, query: nil, body: nil) {
+        self.sendRequestWithMethod(.get, endpoint: .integrations, params: params, query: nil, body: nil) {
             (response, body, error) -> () in
             
             guard error == nil else {
@@ -158,7 +158,7 @@ extension XcodeServer {
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.POST, endpoint: .cancelIntegration, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .cancelIntegration, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(false, error)
@@ -182,7 +182,7 @@ extension XcodeServer {
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .commits, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .commits, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             guard error == nil else {
                 completion(nil, error)
@@ -215,7 +215,7 @@ extension XcodeServer {
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .issues, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .issues, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             guard error == nil else {
                 completion(nil, error)

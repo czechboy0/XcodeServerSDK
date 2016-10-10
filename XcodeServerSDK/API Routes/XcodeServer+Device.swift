@@ -20,7 +20,7 @@ extension XcodeServer {
     */
     public final func getDevices(_ completion: @escaping (_ devices: [Device]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .devices, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .devices, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)

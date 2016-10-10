@@ -23,7 +23,7 @@ class XcodeServerEndpointsTests: XCTestCase {
     
     // If malformed URL is passed to request creation function it should early exit and retur nil
     func testMalformedURLCreation() {
-        let expectation = endpoints?.createRequest(.GET, endpoint: .Bots, params: ["test": "test"], query: ["test//http\\": "!test"], body: ["test": "test"], doBasicAuth: true)
+        let expectation = endpoints?.createRequest(.get, endpoint: .Bots, params: ["test": "test"], query: ["test//http\\": "!test"], body: ["test": "test"], doBasicAuth: true)
         XCTAssertNil(expectation, "Shouldn't create request from malformed URL")
     }
     
@@ -31,25 +31,25 @@ class XcodeServerEndpointsTests: XCTestCase {
         let expectedUrl = URL(string: "https://127.0.0.1:20343/api/bots/bot_id/integrations")
         let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.httpMethod = "GET"
+        expectedRequest.httpMethod = "get"
         // Authorization header: "": ""
         expectedRequest.setValue("Basic Og==", forHTTPHeaderField: "Authorization")
         
         let noAuthorizationConfig = try! XcodeServerConfig(host: "https://127.0.0.1")
         let noAuthorizationEndpoints = XcodeServerEndpoints(serverConfig: noAuthorizationConfig)
-        let request = noAuthorizationEndpoints.createRequest(.GET, endpoint: .Integrations, params: ["bot": "bot_id"], query: nil, body: nil, doBasicAuth: true)
+        let request = noAuthorizationEndpoints.createRequest(.get, endpoint: .Integrations, params: ["bot": "bot_id"], query: nil, body: nil, doBasicAuth: true)
         XCTAssertEqual(expectedRequest, request!)
     }
     
-    func testGETRequestCreation() {
+    func testgetRequestCreation() {
         let expectedUrl = URL(string: "https://127.0.0.1:20343/api/bots/bot_id/integrations?format=json")
         let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.httpMethod = "GET"
+        expectedRequest.httpMethod = "get"
         // Authorization header: "test": "test"
         expectedRequest.setValue("Basic dGVzdDp0ZXN0", forHTTPHeaderField: "Authorization")
         
-        let request = self.endpoints?.createRequest(.GET, endpoint: .Integrations, params: ["bot": "bot_id"], query: ["format": "json"], body: nil, doBasicAuth: true)
+        let request = self.endpoints?.createRequest(.get, endpoint: .Integrations, params: ["bot": "bot_id"], query: ["format": "json"], body: nil, doBasicAuth: true)
         XCTAssertEqual(expectedRequest, request!)
     }
     
@@ -57,13 +57,13 @@ class XcodeServerEndpointsTests: XCTestCase {
         let expectedUrl = URL(string: "https://127.0.0.1:20343/api/auth/logout")
         let expectedRequest = NSMutableURLRequest(url: expectedUrl!)
         // HTTPMethod
-        expectedRequest.httpMethod = "POST"
+        expectedRequest.httpMethod = "post"
         // HTTPBody
         let expectedData = "{\n  \"bodyParam\" : \"bodyValue\"\n}".data(using: String.Encoding.utf8)
         expectedRequest.httpBody = expectedData!
         expectedRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        let request = self.endpoints?.createRequest(.POST, endpoint: .Logout, params: nil, query: nil, body: ["bodyParam": "bodyValue"], doBasicAuth: false)
+        let request = self.endpoints?.createRequest(.post, endpoint: .Logout, params: nil, query: nil, body: ["bodyParam": "bodyValue"], doBasicAuth: false)
         XCTAssertEqual(expectedRequest, request!)
         XCTAssertEqual(expectedRequest.HTTPBody!, request!.HTTPBody!)
     }

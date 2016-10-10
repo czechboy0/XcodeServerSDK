@@ -18,7 +18,7 @@ extension XcodeServer {
     */
     public final func getHostname(_ completion: @escaping (_ hostname: String?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .hostname, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .hostname, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)

@@ -46,7 +46,7 @@ extension XcodeServer {
         
         let blueprintDict = blueprint.dictionarifyRemoteAndCredentials()
         
-        self.sendRequestWithMethod(.POST, endpoint: .scm_Branches, params: nil, query: nil, body: blueprintDict) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .scm_Branches, params: nil, query: nil, body: blueprintDict) { (response, body, error) -> () in
             
             if let error = error {
                 completion(XcodeServer.SCMBranchesResponse.error(error))

@@ -20,7 +20,7 @@ extension XcodeServer {
     */
     public final func getRepositories(_ completion: @escaping (_ repositories: [Repository]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .repositories, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .repositories, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             guard error == nil else {
                 completion(nil, error)
                 return
@@ -67,7 +67,7 @@ extension XcodeServer {
     public final func createRepository(_ repository: Repository, completion: @escaping (_ response: CreateRepositoryResponse) -> ()) {
         let body = repository.dictionarify()
         
-        self.sendRequestWithMethod(.POST, endpoint: .repositories, params: nil, query: nil, body: body) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .repositories, params: nil, query: nil, body: body) { (response, body, error) -> () in
             if let error = error {
                 completion(XcodeServer.CreateRepositoryResponse.error(error))
                 return

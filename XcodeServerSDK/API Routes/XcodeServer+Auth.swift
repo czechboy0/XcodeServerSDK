@@ -22,7 +22,7 @@ extension XcodeServer {
     */
     public final func login(_ completion: @escaping Completion) {
         
-        self.sendRequestWithMethod(.POST, endpoint: .login, params: nil, query: nil, body: nil) {
+        self.sendRequestWithMethod(.post, endpoint: .login, params: nil, query: nil, body: nil) {
             (response, body, error) -> () in
             
             if error != nil {
@@ -51,7 +51,7 @@ extension XcodeServer {
     public typealias Completion = (Bool, Error?) -> Void
     public final func logout(_ completion: @escaping Completion) {
         
-        self.sendRequestWithMethod(.POST, endpoint: .logout, params: nil, query: nil, body: nil) {
+        self.sendRequestWithMethod(.post, endpoint: .logout, params: nil, query: nil, body: nil) {
             (response, body, error) -> () in
             
             if error != nil {
@@ -81,7 +81,7 @@ extension XcodeServer {
     */
     public final func getUserCanCreateBots(_ completion: @escaping (_ canCreateBots: Bool, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .userCanCreateBots, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .userCanCreateBots, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if let error = error {
                 completion(false, error)

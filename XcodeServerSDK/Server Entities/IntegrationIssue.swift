@@ -11,13 +11,13 @@ import Foundation
 open class IntegrationIssue: XcodeServerEntity {
     
     public enum IssueType: String {
-        case BuildServiceError = "buildServiceError"
-        case BuildServiceWarning = "buildServiceWarning"
-        case TriggerError = "triggerError"
-        case Error = "error"
-        case Warning = "warning"
-        case TestFailure = "testFailure"
-        case AnalyzerWarning = "analyzerWarning"
+        case buildServiceError = "buildServiceError"
+        case buildServiceWarning = "buildServiceWarning"
+        case triggerError = "triggerError"
+        case error = "error"
+        case warning = "warning"
+        case testFailure = "testFailure"
+        case analyzerWarning = "analyzerWarning"
     }
     
     public enum IssueStatus: Int {

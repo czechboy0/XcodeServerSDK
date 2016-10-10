@@ -160,7 +160,7 @@ open class XcodeServerEndpoints {
     /**
     Builder method for URlrequests based on input parameters.
     
-    - parameter method:      HTTP method used for request (GET, POST etc.)
+    - parameter method:      HTTP method used for request (get, post etc.)
     - parameter endpoint:    Endpoint object
     - parameter params:      URL params (default is nil)
     - parameter query:       Query parameters (default is nil)

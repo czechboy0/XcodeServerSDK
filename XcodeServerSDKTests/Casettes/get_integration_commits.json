@@ -232,7 +232,7 @@
         }
       },
       "request" : {
-        "method" : "GET",
+        "method" : "get",
         "url" : "https:\/\/127.0.0.1:20343\/api\/integrations\/56ad016e2e3993ca0b8ed276050150e8\/commits",
         "headers" : {
           "Authorization" : "Basic SUNhbkNyZWF0ZUJvdHM6c3VwZXJTZWNyM3Q="

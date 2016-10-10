@@ -19,7 +19,7 @@ extension XcodeServer {
      - parameter error:      Optional error.
      */
     public final func getToolchains(_ completion: @escaping (_ toolchains: [Toolchain]?,_ error: Error?) -> ()) {
-        self.sendRequestWithMethod(.GET, endpoint: .toolchains, params: nil, query: nil, body: nil) { (response, body, error) in
+        self.sendRequestWithMethod(.get, endpoint: .toolchains, params: nil, query: nil, body: nil) { (response, body, error) in
             if error != nil {
                 completion(nil, error)
                 return

@@ -20,7 +20,7 @@ extension XcodeServer {
     */
     public final func getPlatforms(_ completion: @escaping (_ platforms: [DevicePlatform]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .platforms, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .platforms, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)

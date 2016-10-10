@@ -1,7 +1,7 @@
 PODS:
-  - BuildaUtils (0.4.1):
+  - BuildaUtils (0.4.2):
     - SwiftSafe
-  - DVR (0.1)
+  - DVR (0.1.1)
   - Nimble (5.0.0)
   - SwiftSafe (0.1)
 
@@ -18,15 +18,15 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   BuildaUtils:
-    :commit: 106e5555507400b49792d80d4b13c633dd8a5396
+    :commit: cbf4aff04056e739078b1f47e99d5054f133b374
     :git: https://github.com/Sajjon/BuildaUtils.git
   DVR:
-    :commit: 618e7ad432b38262adc112203aca3d427c7c12b9
+    :commit: cea79f619f26c9f746b6f75000f0da5834051e01
     :git: https://github.com/Sajjon/DVR.git
 
 SPEC CHECKSUMS:
-  BuildaUtils: a2a6ed143202af8905f0d0152a3bd57709bba7f7
-  DVR: 07f86c5b543dc70fb7d72d4a43c27ccf4f2dbf20
+  BuildaUtils: a2bee9cfdae38159bf98e93a341a911c0305f255
+  DVR: c42b23dbee2e04ec81ca415b0b57d1f98123e25d
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
   SwiftSafe: 77ffd12b02678790bec1ef56a2d14ec5036f1fd6
 

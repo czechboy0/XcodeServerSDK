@@ -13,34 +13,34 @@ open class LiveUpdateMessage: XcodeServerEntity {
     public enum MessageType: String {
         
         //bots
-        case BotCreated = "botCreated"
-        case BotUpdated = "botUpdated"
-        case BotRemoved = "botRemoved"
+        case botCreated = "botCreated"
+        case botUpdated = "botUpdated"
+        case botRemoved = "botRemoved"
         
         //devices
-        case DeviceCreated = "deviceCreated"
-        case DeviceUpdated = "deviceUpdated"
-        case DeviceRemoved = "deviceRemoved"
+        case deviceCreated = "deviceCreated"
+        case deviceUpdated = "deviceUpdated"
+        case deviceRemoved = "deviceRemoved"
         
         //integrations
-        case PendingIntegrations = "pendingIntegrations"
-        case IntegrationCreated = "integrationCreated"
-        case IntegrationStatus = "integrationStatus"
-        case IntegrationCanceled = "cancelIntegration"
-        case IntegrationRemoved = "integrationRemoved"
-        case AdvisoryIntegrationStatus = "advisoryIntegrationStatus"
+        case pendingIntegrations = "pendingIntegrations"
+        case integrationCreated = "integrationCreated"
+        case integrationStatus = "integrationStatus"
+        case integrationCanceled = "cancelIntegration"
+        case integrationRemoved = "integrationRemoved"
+        case advisoryIntegrationStatus = "advisoryIntegrationStatus"
         
         //repositories
-        case ListRepositories = "listRepositories"
-        case CreateRepository = "createRepository"
+        case listRepositories = "listRepositories"
+        case createRepository = "createRepository"
         
         //boilerplate
-        case Ping = "ping"
-        case Pong = "pong"
-        case ACLUpdated = "aclUpdated"
-        case RequestPortalSync = "requestPortalSync"
+        case ping = "ping"
+        case pong = "pong"
+        case aclUpdated = "aclUpdated"
+        case requestPortalSync = "requestPortalSync"
         
-        case Unknown = ""
+        case unknown = ""
     }
     
     open let type: MessageType
@@ -55,7 +55,7 @@ open class LiveUpdateMessage: XcodeServerEntity {
         
         let typeString = json.optionalStringForKey("name") ?? ""
         
-        self.type = MessageType(rawValue: typeString) ?? .Unknown
+        self.type = MessageType(rawValue: typeString) ?? .unknown
         
         let args = (json["args"] as? NSArray)?[0] as? NSDictionary
         

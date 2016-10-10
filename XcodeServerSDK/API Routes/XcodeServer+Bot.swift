@@ -72,7 +72,7 @@ extension XcodeServer {
     */
     public final func getBots(_ completion: @escaping (_ bots: [Bot]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .bots, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .bots, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)
@@ -103,7 +103,7 @@ extension XcodeServer {
             "bot": botTinyId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .bots, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .bots, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(nil, error)
@@ -136,7 +136,7 @@ extension XcodeServer {
             "bot": botId
         ]
         
-        self.sendRequestWithMethod(.DELETE, endpoint: .bots, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.delete, endpoint: .bots, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
                 completion(false, error)
@@ -196,7 +196,7 @@ extension XcodeServer {
         
         let body: [String: Any] = botOrder.dictionarify()
         
-        self.sendRequestWithMethod(.POST, endpoint: .bots, params: nil, query: nil, body: body) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .bots, params: nil, query: nil, body: body) { (response, body, error) -> () in
             
             if let error = error {
                 completion(XcodeServer.CreateBotResponse.error(error: error))
