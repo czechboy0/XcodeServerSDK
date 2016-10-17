@@ -1,35 +1,30 @@
 PODS:
-  - BuildaUtils (0.4.2):
-    - SwiftSafe
+  - BuildaUtils (0.4.0):
+    - SwiftSafe (~> 2.0)
   - DVR (0.1.1)
   - Nimble (5.0.0)
-  - SwiftSafe (0.1)
+  - SwiftSafe (2.0.0)
 
 DEPENDENCIES:
-  - BuildaUtils (from `https://github.com/Sajjon/BuildaUtils.git`)
+  - BuildaUtils (~> 0.4)
   - DVR (from `https://github.com/Sajjon/DVR.git`)
   - Nimble (~> 5.0)
 
 EXTERNAL SOURCES:
-  BuildaUtils:
-    :git: https://github.com/Sajjon/BuildaUtils.git
   DVR:
     :git: https://github.com/Sajjon/DVR.git
 
 CHECKOUT OPTIONS:
-  BuildaUtils:
-    :commit: cbf4aff04056e739078b1f47e99d5054f133b374
-    :git: https://github.com/Sajjon/BuildaUtils.git
   DVR:
     :commit: cea79f619f26c9f746b6f75000f0da5834051e01
     :git: https://github.com/Sajjon/DVR.git
 
 SPEC CHECKSUMS:
-  BuildaUtils: a2bee9cfdae38159bf98e93a341a911c0305f255
+  BuildaUtils: 2cb74617050be76e2c29560ec40ca9bd88f2f8ec
   DVR: c42b23dbee2e04ec81ca415b0b57d1f98123e25d
   Nimble: 56fc9f5020effa2206de22c3dd910f4fb011b92f
-  SwiftSafe: 77ffd12b02678790bec1ef56a2d14ec5036f1fd6
+  SwiftSafe: b64ef3119a0b906e9ca6f67cd1705f351c9a8f9c
 
-PODFILE CHECKSUM: 29fba2bb00b61803bfd7ddb6e0183cc8a3566a2e
+PODFILE CHECKSUM: 290ac6ab25ded9f77b7639683a3738456d8c0015
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.rc.3

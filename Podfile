@@ -2,7 +2,7 @@
 use_frameworks!
 
 def utils
-	pod 'BuildaUtils', :git => 'https://github.com/Sajjon/BuildaUtils.git'
+	pod 'BuildaUtils', '~> 0.4'
 end
 
 def tests
