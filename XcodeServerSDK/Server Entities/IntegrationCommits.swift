@@ -9,13 +9,13 @@
 import Foundation
 import BuildaUtils
 
-public class IntegrationCommits: XcodeServerEntity {
+open class IntegrationCommits: XcodeServerEntity {
     
-    public let integration: String
-    public let botTinyID: String
-    public let botID: String
-    public let commits: [String: [Commit]]
-    public let endedTimeDate: NSDate?
+    open let integration: String
+    open let botTinyID: String
+    open let botID: String
+    open let commits: [String: [Commit]]
+    open let endedTimeDate: Date?
     
     public required init(json: NSDictionary) throws {
         self.integration = try json.stringForKey("integration")
@@ -34,7 +34,7 @@ public class IntegrationCommits: XcodeServerEntity {
     
     - returns: Dictionary of parsed Commit objects.
     */
-    class func populateCommits(json: NSDictionary) throws -> [String: [Commit]] {
+    class func populateCommits(_ json: NSDictionary) throws -> [String: [Commit]] {
         var resultsDictionary: [String: [Commit]] = Dictionary()
         
         for (key, value) in json {
@@ -56,7 +56,7 @@ public class IntegrationCommits: XcodeServerEntity {
     
     - returns: Optional parsed date to the format used by Xcode Server.
     */
-    class func parseDate(array: NSArray) -> NSDate? {
+    class func parseDate(_ array: NSArray) -> Date? {
         guard let dateArray = array as? [Int] else {
             Log.error("Couldn't parse XCS date array")
             return nil
@@ -65,13 +65,13 @@ public class IntegrationCommits: XcodeServerEntity {
         do {
             let stringDate = try dateArray.dateString()
             
-            guard let date = NSDate.dateFromXCSString(stringDate) else {
+            guard let date = Date.dateFromXCSString(stringDate) else {
                 Log.error("Formatter couldn't parse date")
                 return nil
             }
             
             return date
-        } catch DateParsingError.WrongNumberOfElements(let elements) {
+        } catch DateParsingError.wrongNumberOfElements(let elements) {
             Log.error("Couldn't parse date as Array has \(elements) elements")
         } catch {
             Log.error("Something went wrong while parsing date")

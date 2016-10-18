@@ -9,7 +9,7 @@
 import Foundation
 import BuildaUtils
 
-public class CIServer : HTTPServer {
+open class CIServer : HTTPServer {
     
 }
 

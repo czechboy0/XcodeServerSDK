@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class Toolchain: XcodeServerEntity {
+open class Toolchain: XcodeServerEntity {
     
-    public let displayName: String
-    public let path: String
-    public let signatureVerified: Bool
+    open let displayName: String
+    open let path: String
+    open let signatureVerified: Bool
  
     public required init(json: NSDictionary) throws {
         

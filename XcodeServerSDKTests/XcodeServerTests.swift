@@ -50,13 +50,13 @@ class XcodeServerTests: XCTestCase {
     
     func DEV_testLiveUpdates() {
         
-        let exp = self.expectationWithDescription("Network")
+        let exp = self.expectation(description: "Network")
         let stopHandler = self.server.startListeningForLiveUpdates({ (messages: [LiveUpdateMessage]) -> () in
             print(messages)
         })
         
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(5000 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue(), { () -> Void in
+        let delayTime = DispatchTime.now() + Double(Int64(5000 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime, execute: { () -> Void in
             print("stopping")
             stopHandler()
             exp.fulfill()
@@ -68,28 +68,28 @@ class XcodeServerTests: XCTestCase {
     
     func DEV_testLive_GetBots() {
         
-        let exp = self.expectationWithDescription("Network")
+        let exp = self.expectation(description: "Network")
         self.server.getBots { (bots, error) in
             exp.fulfill()
         }
-        self.waitForExpectationsWithTimeout(10, handler: nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
     }
     
     func DEV_testLive_FetchAndRecordBot() {
         
-        let exp = self.expectationWithDescription("Network")
+        let exp = self.expectation(description: "Network")
         let server = self.getRecordingXcodeServer("test_bot")
         
         server.getBots { (bots, error) in
             exp.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10, handler: nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
     }
     
     func DEV_testLive_BotCreation() {
 
-        let exp = self.expectationWithDescription("wait")
+        let exp = self.expectation(description: "wait")
 
         let privateKey = self.stringAtPath("~/.ssh/id_rsa")
         let publicKey = self.stringAtPath("~/.ssh/id_rsa.pub")
@@ -124,7 +124,7 @@ class XcodeServerTests: XCTestCase {
             }
         }
 
-        self.waitForExpectationsWithTimeout(1000, handler: nil)
+        self.waitForExpectations(timeout: 1000, handler: nil)
     }
 }
 

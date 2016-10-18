@@ -9,15 +9,15 @@
 import Foundation
 import BuildaUtils
 
-public class IntegrationIssues: XcodeServerEntity {
+open class IntegrationIssues: XcodeServerEntity {
     
-    public let buildServiceErrors: [IntegrationIssue]
-    public let buildServiceWarnings: [IntegrationIssue]
-    public let triggerErrors: [IntegrationIssue]
-    public let errors: [IntegrationIssue]
-    public let warnings: [IntegrationIssue]
-    public let testFailures: [IntegrationIssue]
-    public let analyzerWarnings: [IntegrationIssue]
+    open let buildServiceErrors: [IntegrationIssue]
+    open let buildServiceWarnings: [IntegrationIssue]
+    open let triggerErrors: [IntegrationIssue]
+    open let errors: [IntegrationIssue]
+    open let warnings: [IntegrationIssue]
+    open let testFailures: [IntegrationIssue]
+    open let analyzerWarnings: [IntegrationIssue]
     
     // MARK: Initialization
     
@@ -30,28 +30,28 @@ public class IntegrationIssues: XcodeServerEntity {
         self.errors = try json
             .dictionaryForKey("errors")
             .allValues
-            .filter { $0.count != 0 }
+            .filter { guard let array = $0 as? NSArray else { return false }; return array.count > 0 }
             .flatMap {
                 try ($0 as! NSArray).map { try IntegrationIssue(json: $0 as! NSDictionary) }
         }
         self.warnings = try json
             .dictionaryForKey("warnings")
             .allValues
-            .filter { $0.count != 0 }
+            .filter { guard let array = $0 as? NSArray else { return false }; return array.count > 0 }
             .flatMap {
                 try ($0 as! NSArray).map { try IntegrationIssue(json: $0 as! NSDictionary) }
         }
         self.testFailures = try json
             .dictionaryForKey("testFailures")
             .allValues
-            .filter { $0.count != 0 }
+            .filter { guard let array = $0 as? NSArray else { return false }; return array.count > 0 }
             .flatMap {
                 try ($0 as! NSArray).map { try IntegrationIssue(json: $0 as! NSDictionary) }
         }
         self.analyzerWarnings = try json
             .dictionaryForKey("analyzerWarnings")
             .allValues
-            .filter { $0.count != 0 }
+            .filter { guard let array = $0 as? NSArray else { return false }; return array.count > 0 }
             .flatMap {
                 try ($0 as! NSArray).map { try IntegrationIssue(json: $0 as! NSDictionary) }
         }
@@ -59,4 +59,16 @@ public class IntegrationIssues: XcodeServerEntity {
         try super.init(json: json)
     }
     
+}
+
+private extension NSDictionary {
+    func integrationIssue(withKey key: String) throws -> [IntegrationIssue] {
+        return try self
+            .dictionaryForKey(key)
+            .allValues
+            .filter { guard let array = $0 as? NSArray else { return false }; return array.count > 0 }
+            .flatMap {
+                try ($0 as! NSArray).map { try IntegrationIssue(json: $0 as! NSDictionary) }
+        }
+    }
 }

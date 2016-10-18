@@ -8,59 +8,59 @@
 
 import Foundation
 
-public class Integration : XcodeServerEntity {
+open class Integration : XcodeServerEntity {
     
     //usually available during the whole integration's lifecycle
-    public let queuedDate: NSDate
-    public let shouldClean: Bool
-    public let currentStep: Step!
-    public let number: Int
+    open let queuedDate: Date
+    open let shouldClean: Bool
+    open let currentStep: Step!
+    open let number: Int
     
     //usually available only after the integration has finished
-    public let successStreak: Int?
-    public let startedDate: NSDate?
-    public let endedTime: NSDate?
-    public let duration: NSTimeInterval?
-    public let result: Result?
-    public let buildResultSummary: BuildResultSummary?
-    public let testedDevices: [Device]?
-    public let testHierarchy: TestHierarchy?
-    public let assets: NSDictionary?  //TODO: add typed array with parsing
-    public let blueprint: SourceControlBlueprint?
+    open let successStreak: Int?
+    open let startedDate: Date?
+    open let endedTime: Date?
+    open let duration: TimeInterval?
+    open let result: Result?
+    open let buildResultSummary: BuildResultSummary?
+    open let testedDevices: [Device]?
+    open let testHierarchy: TestHierarchy?
+    open let assets: NSDictionary?  //TODO: add typed array with parsing
+    open let blueprint: SourceControlBlueprint?
     
     //new keys
-    public let expectedCompletionDate: NSDate?
+    open let expectedCompletionDate: Date?
     
     public enum Step : String {
-        case Unknown = ""
-        case Pending = "pending"
-        case Preparing = "preparing"
-        case Checkout = "checkout"
-        case BeforeTriggers = "before-triggers"
-        case Building = "building"
-        case Testing = "testing"
-        case Archiving = "archiving"
-        case Processing = "processing"
-        case AfterTriggers = "after-triggers"
-        case Uploading = "uploading"
-        case Completed = "completed"
+        case unknown = ""
+        case pending = "pending"
+        case preparing = "preparing"
+        case checkout = "checkout"
+        case beforeTriggers = "before-triggers"
+        case building = "building"
+        case testing = "testing"
+        case archiving = "archiving"
+        case processing = "processing"
+        case afterTriggers = "after-triggers"
+        case uploading = "uploading"
+        case completed = "completed"
     }
     
     public enum Result : String {
-        case Unknown = "unknown"
-        case Succeeded = "succeeded"
-        case BuildErrors = "build-errors"
-        case TestFailures = "test-failures"
-        case Warnings = "warnings"
-        case AnalyzerWarnings = "analyzer-warnings"
-        case BuildFailed = "build-failed"
-        case CheckoutError = "checkout-error"
-        case InternalError = "internal-error"
-        case InternalCheckoutError = "internal-checkout-error"
-        case InternalBuildError = "internal-build-error"
-        case InternalProcessingError = "internal-processing-error"
-        case Canceled = "canceled"
-        case TriggerError = "trigger-error"
+        case unknown = "unknown"
+        case succeeded = "succeeded"
+        case buildErrors = "build-errors"
+        case testFailures = "test-failures"
+        case warnings = "warnings"
+        case analyzerWarnings = "analyzer-warnings"
+        case buildFailed = "build-failed"
+        case checkoutError = "checkout-error"
+        case internalError = "internal-error"
+        case internalCheckoutError = "internal-checkout-error"
+        case internalBuildError = "internal-build-error"
+        case internalProcessingError = "internal-processing-error"
+        case canceled = "canceled"
+        case triggerError = "trigger-error"
     }
     
     public required init(json: NSDictionary) throws {
@@ -70,7 +70,7 @@ public class Integration : XcodeServerEntity {
         self.endedTime = json.optionalDateForKey("endedTime")
         self.duration = json.optionalDoubleForKey("duration")
         self.shouldClean = try json.boolForKey("shouldClean")
-        self.currentStep = Step(rawValue: try json.stringForKey("currentStep")) ?? .Unknown
+        self.currentStep = Step(rawValue: try json.stringForKey("currentStep")) ?? .unknown
         self.number = try json.intForKey("number")
         self.successStreak = try json.intForKey("success_streak")
         self.expectedCompletionDate = json.optionalDateForKey("expectedCompletionDate")
@@ -93,7 +93,7 @@ public class Integration : XcodeServerEntity {
             self.testedDevices = nil
         }
         
-        if let testHierarchy = json.optionalDictionaryForKey("testHierarchy") where testHierarchy.count > 0 {
+        if let testHierarchy = json.optionalDictionaryForKey("testHierarchy") , testHierarchy.count > 0 {
             self.testHierarchy = try TestHierarchy(json: testHierarchy)
         } else {
             self.testHierarchy = nil
@@ -111,22 +111,22 @@ public class Integration : XcodeServerEntity {
     }
 }
 
-public class BuildResultSummary : XcodeServerEntity {
+open class BuildResultSummary : XcodeServerEntity {
     
-    public let analyzerWarningCount: Int
-    public let testFailureCount: Int
-    public let testsChange: Int
-    public let errorCount: Int
-    public let testsCount: Int
-    public let testFailureChange: Int
-    public let warningChange: Int
-    public let regressedPerfTestCount: Int
-    public let warningCount: Int
-    public let errorChange: Int
-    public let improvedPerfTestCount: Int
-    public let analyzerWarningChange: Int
-    public let codeCoveragePercentage: Int
-    public let codeCoveragePercentageDelta: Int
+    open let analyzerWarningCount: Int
+    open let testFailureCount: Int
+    open let testsChange: Int
+    open let errorCount: Int
+    open let testsCount: Int
+    open let testFailureChange: Int
+    open let warningChange: Int
+    open let regressedPerfTestCount: Int
+    open let warningCount: Int
+    open let errorChange: Int
+    open let improvedPerfTestCount: Int
+    open let analyzerWarningChange: Int
+    open let codeCoveragePercentage: Int
+    open let codeCoveragePercentageDelta: Int
     
     public required init(json: NSDictionary) throws {
         

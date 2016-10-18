@@ -1589,7 +1589,7 @@
         }
       },
       "request" : {
-        "method" : "GET",
+        "method" : "get",
         "url" : "https:\/\/127.0.0.1:20343\/api\/integrations\/960f6989b4c7289433ff04db71033d28\/issues",
         "headers" : {
           "Authorization" : "Basic SUNhbkNyZWF0ZUJvdHM6c3VwZXJTZWNyM3Q="

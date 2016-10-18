@@ -57,7 +57,7 @@
         }
       },
       "request" : {
-        "method" : "GET",
+        "method" : "get",
         "url" : "https:\/\/127.0.0.1:20343\/api\/platforms",
         "headers" : {
           "Authorization" : "Basic SUNhbkNyZWF0ZUJvdHM6c3VwZXJTZWNyM3Q="

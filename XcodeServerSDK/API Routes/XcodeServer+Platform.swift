@@ -18,12 +18,12 @@ extension XcodeServer {
     - parameter platforms:  Optional array of platforms.
     - parameter error:      Optional error indicating some problems.
     */
-    public final func getPlatforms(completion: (platforms: [DevicePlatform]?, error: NSError?) -> ()) {
+    public final func getPlatforms(_ completion: @escaping (_ platforms: [DevicePlatform]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .Platforms, params: nil, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .platforms, params: nil, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
-                completion(platforms: nil, error: error)
+                completion(nil, error)
                 return
             }
             
@@ -31,9 +31,9 @@ extension XcodeServer {
                 let (result, error): ([DevicePlatform]?, NSError?) = unthrow {
                     return try XcodeServerArray(array)
                 }
-                completion(platforms: result, error: error)
+                completion(result, error)
             } else {
-                completion(platforms: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
             }
         }
     }
