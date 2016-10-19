@@ -84,14 +84,14 @@ public struct XcodeServerConfig : JSONSerializable {
             throw ConfigurationErrors.InvalidHostProvided(host)
         }
         
-        guard url.scheme.isEmpty || url.scheme == "https" else {
+        guard url.scheme == nil || url.scheme! == "https" else {
             let errMsg = "Xcode Server generally uses https, please double check your hostname"
             Log.error(errMsg)
             throw ConfigurationErrors.InvalidSchemeProvided(errMsg)
         }
         
         // validate if host is a valid URL
-        if url.scheme.isEmpty {
+        if url.scheme == nil {
             // exted host with https scheme
             host = "https://" + host
         }
