@@ -38,7 +38,7 @@ extension XCTestCase {
         let server = XcodeServerFactory.server(config)
         let backingSession = server.http.session
         
-        let session = DVR.Session(cassetteName: cassetteName, testBundle: Bundle(forClass: self.classForCoder), backingSession: backingSession)
+        let session = DVR.Session(cassetteName: cassetteName, testBundle: Bundle(for: self.classForCoder), backingSession: backingSession)
         server.http.session = session
         
         return server

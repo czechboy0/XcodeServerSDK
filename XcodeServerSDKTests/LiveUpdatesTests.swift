@@ -19,7 +19,7 @@ class LiveUpdatesTests: XCTestCase {
         let packets: [SocketIOPacket] = SocketIOHelper.parsePackets(message)
         expect(packets.count) == 1
         let packet = packets.first!
-        expect(packet.type) == SocketIOPacket.PacketType.Connect
+        expect(packet.type) == SocketIOPacket.PacketType.connect
         expect(packet.jsonPayload).to(beNil())
         expect(packet.stringPayload) == ""
     }
@@ -29,10 +29,10 @@ class LiveUpdatesTests: XCTestCase {
         let packets: [SocketIOPacket] = SocketIOHelper.parsePackets(message)
         expect(packets.count) == 1
         let packet = packets.first!
-        expect(packet.type) == SocketIOPacket.PacketType.Error
+        expect(packet.type) == SocketIOPacket.PacketType.error
         let (reason, advice) = packet.parseError()
-        expect(reason) == SocketIOPacket.ErrorReason.ClientNotHandshaken
-        expect(advice) == SocketIOPacket.ErrorAdvice.Reconnect
+        expect(reason) == SocketIOPacket.ErrorReason.clientNotHandshaken
+        expect(advice) == SocketIOPacket.ErrorAdvice.reconnect
     }
     
     func testParsing_SingleEventMessage() throws {
@@ -43,7 +43,7 @@ class LiveUpdatesTests: XCTestCase {
         let packet = packets.first!
         expect(packet.jsonPayload).toNot(beNil())
         let msg = try LiveUpdateMessage(json: packet.jsonPayload!)
-        expect(msg.type) == LiveUpdateMessage.MessageType.AdvisoryIntegrationStatus
+        expect(msg.type) == LiveUpdateMessage.MessageType.advisoryIntegrationStatus
         expect(msg.message) == "BuildaKit : Linking"
         expect(msg.integrationId) == "07a63fae4ff2d5a37eee830be556d143"
         expect(msg.progress) == 0.7578125
@@ -57,7 +57,7 @@ class LiveUpdatesTests: XCTestCase {
         for packet in packets {
             expect(packet.jsonPayload).toNot(beNil())
             let msg = try LiveUpdateMessage(json: packet.jsonPayload!)
-            expect(msg.type) == LiveUpdateMessage.MessageType.AdvisoryIntegrationStatus
+            expect(msg.type) == LiveUpdateMessage.MessageType.advisoryIntegrationStatus
         }
     }
 }

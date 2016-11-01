@@ -23,29 +23,29 @@ class FileTests: XCTestCase {
     
     // MARK: Initialization
     func testDictionaryInit() throws {
-        var file = try File(json: sampleAdded)
+        var file = try File(json: sampleAdded as NSDictionary)
         
         XCTAssertEqual(file.filePath, "File1.swift")
-        XCTAssertEqual(file.status, FileStatus.Added)
+        XCTAssertEqual(file.status, FileStatus.added)
         
-        file = try File(json: sampleOther)
+        file = try File(json: sampleOther as NSDictionary)
         
         XCTAssertEqual(file.filePath, "File2.swift")
-        XCTAssertEqual(file.status, FileStatus.Other)
+        XCTAssertEqual(file.status, FileStatus.other)
     }
     
     func testInit() {
-        let file = File(filePath: "File1.swift", status: .Added)
+        let file = File(filePath: "File1.swift", status: .added)
 
         XCTAssertEqual(file.filePath, "File1.swift")
-        XCTAssertEqual(file.status, FileStatus.Added)
+        XCTAssertEqual(file.status, FileStatus.added)
     }
     
     // MARK: Dictioninarifying
     func testDictionarify() throws {
-        let file = try File(json: sampleAdded)
+        let file = try File(json: sampleAdded as NSDictionary)
         
-        XCTAssertEqual(file.dictionarify(), sampleAdded)
+        XCTAssert(file.dictionarify() == sampleAdded)
     }
     
 }

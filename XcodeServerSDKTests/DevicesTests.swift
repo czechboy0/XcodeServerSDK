@@ -37,8 +37,8 @@ class DevicesTests: XCTestCase {
     ])
     
     func testDictionarify() {
-        let expected = [ "device_id": "1ad0e8785cacca73d980cdb23600383e" ]
-        XCTAssertEqual(macMini.dictionarify(), expected)
+        let expected: [String : Any] = [ "device_id": "1ad0e8785cacca73d980cdb23600383e" ]
+        XCTAssert(macMini.dictionarify() ==  expected)
     }
     
     func testGetDevices() {

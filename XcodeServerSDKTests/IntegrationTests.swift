@@ -79,7 +79,7 @@ class IntegrationTests: XCTestCase {
             
             expect(issues.errors.count) == 1
             
-            let expectation = issues.warnings.filter { $0.status == .Fresh }
+            let expectation = issues.warnings.filter { $0.status == .fresh }
             expect(expectation.count) == 2
             expect(issues.analyzerWarnings.isEmpty).to(beTrue())
             
