@@ -10,19 +10,19 @@ import Foundation
 
 let TestResultAggregateKey = "_xcsAggrDeviceStatus"
 
-public class TestHierarchy : XcodeServerEntity {
+open class TestHierarchy : XcodeServerEntity {
     
     typealias TestResult = [String: Double]
     typealias AggregateResult = TestResult
     
     enum TestMethod {
-        case Method(TestResult)
-        case Aggregate(AggregateResult)
+        case method(TestResult)
+        case aggregate(AggregateResult)
     }
     
     enum TestClass {
-        case Class([String: TestMethod])
-        case Aggregate(AggregateResult)
+        case clazz([String: TestMethod])
+        case aggregate(AggregateResult)
     }
     
     typealias TestTarget = [String: TestClass]
@@ -76,7 +76,7 @@ public class TestHierarchy : XcodeServerEntity {
         try super.init(json: json)
     }
     
-    class func pullData(json: NSDictionary) -> TestData {
+    class func pullData(_ json: NSDictionary) -> TestData {
         
         var data = TestData()
         
@@ -89,7 +89,7 @@ public class TestHierarchy : XcodeServerEntity {
         return data
     }
     
-    class func pullTarget(targetName: String, targetData: NSDictionary) -> TestTarget {
+    class func pullTarget(_ targetName: String, targetData: NSDictionary) -> TestTarget {
         
         var target = TestTarget()
         
@@ -102,11 +102,11 @@ public class TestHierarchy : XcodeServerEntity {
         return target
     }
     
-    class func pullClass(className: String, classData: NSDictionary) -> TestClass {
+    class func pullClass(_ className: String, classData: NSDictionary) -> TestClass {
         
         let classy: TestClass
         if className == TestResultAggregateKey {
-            classy = TestClass.Aggregate(classData as! AggregateResult)
+            classy = TestClass.aggregate(classData as! AggregateResult)
         } else {
             
             var newData = [String: TestMethod]()
@@ -117,18 +117,18 @@ public class TestHierarchy : XcodeServerEntity {
                 newData[methodName] = pullMethod(methodName, methodData: methodData)
             }
             
-            classy = TestClass.Class(newData)
+            classy = TestClass.clazz(newData)
         }
         return classy
     }
     
-    class func pullMethod(methodName: String, methodData: NSDictionary) -> TestMethod {
+    class func pullMethod(_ methodName: String, methodData: NSDictionary) -> TestMethod {
         
         let method: TestMethod
         if methodName == TestResultAggregateKey {
-            method = TestMethod.Aggregate(methodData as! AggregateResult)
+            method = TestMethod.aggregate(methodData as! AggregateResult)
         } else {
-            method = TestMethod.Method(methodData as! TestResult)
+            method = TestMethod.method(methodData as! TestResult)
         }
         return method
     }

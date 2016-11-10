@@ -70,8 +70,8 @@ class IssueTests: XCTestCase {
         XCTAssertNotNil(errorWithCommits)
         
         // Check types
-        XCTAssertEqual(buildServiceError.type, IntegrationIssue.IssueType.BuildServiceError)
-        XCTAssertEqual(errorWithCommits.type, IntegrationIssue.IssueType.Error)
+        XCTAssertEqual(buildServiceError.type, IntegrationIssue.IssueType.buildServiceError)
+        XCTAssertEqual(errorWithCommits.type, IntegrationIssue.IssueType.error)
     }
     
     func testPayload() {

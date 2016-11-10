@@ -14,28 +14,28 @@ public struct TriggerConfig: XcodeRead, XcodeWrite {
     public let id: RefType
     
     public enum Phase: Int {
-        case Prebuild = 1
-        case Postbuild
+        case prebuild = 1
+        case postbuild
         
         public func toString() -> String {
             switch self {
-            case .Prebuild:
+            case .prebuild:
                 return "Run Before the Build"
-            case .Postbuild:
+            case .postbuild:
                 return "Run After the Build"
             }
         }
     }
     
     public enum Kind: Int {
-        case RunScript = 1
-        case EmailNotification
+        case runScript = 1
+        case emailNotification
         
         public func toString() -> String {
             switch self {
-            case .RunScript:
+            case .runScript:
                 return "Run Script"
-            case .EmailNotification:
+            case .emailNotification:
                 return "Send Email"
             }
         }
@@ -50,8 +50,8 @@ public struct TriggerConfig: XcodeRead, XcodeWrite {
     
     //creates a default trigger config
     public init() {
-        self.phase = .Prebuild
-        self.kind = .RunScript
+        self.phase = .prebuild
+        self.kind = .runScript
         self.scriptBody = "cd *\n"
         self.name = ""
         self.conditions = nil
@@ -71,14 +71,14 @@ public struct TriggerConfig: XcodeRead, XcodeWrite {
             self.id = id ?? Ref.new()
             
             //post build triggers must have conditions
-            if phase == Phase.Postbuild {
+            if phase == Phase.postbuild {
                 if conditions == nil {
                     return nil
                 }
             }
             
             //email type must have a configuration
-            if kind == Kind.EmailNotification {
+            if kind == Kind.emailNotification {
                 if emailConfiguration == nil {
                     return nil
                 }
@@ -89,7 +89,7 @@ public struct TriggerConfig: XcodeRead, XcodeWrite {
         
         let phase = Phase(rawValue: try json.intForKey("phase"))!
         self.phase = phase
-        if let conditionsJSON = json.optionalDictionaryForKey("conditions") where phase == .Postbuild {
+        if let conditionsJSON = json.optionalDictionaryForKey("conditions") , phase == .postbuild {
             //also parse conditions
             self.conditions = try TriggerConditions(json: conditionsJSON)
         } else {
@@ -98,7 +98,7 @@ public struct TriggerConfig: XcodeRead, XcodeWrite {
         
         let kind = Kind(rawValue: try json.intForKey("type"))!
         self.kind = kind
-        if let configurationJSON = json.optionalDictionaryForKey("emailConfiguration") where kind == .EmailNotification {
+        if let configurationJSON = json.optionalDictionaryForKey("emailConfiguration") , kind == .emailNotification {
             //also parse email config
             self.emailConfiguration = try EmailConfiguration(json: configurationJSON)
         } else {
@@ -111,25 +111,25 @@ public struct TriggerConfig: XcodeRead, XcodeWrite {
         self.id = json.optionalStringForKey("id") ?? Ref.new()
     }
     
-    public func dictionarify() -> NSDictionary {
+    public func dictionarify() -> [String: Any] {
         
-        let dict = NSMutableDictionary()
+        var dict: [String: Any] = [:]
         
         dict["id"] = self.id
         dict["phase"] = self.phase.rawValue
         dict["type"] = self.kind.rawValue
         dict["scriptBody"] = self.scriptBody
         dict["name"] = self.name
-        dict.optionallyAddValueForKey(self.conditions?.dictionarify(), key: "conditions")
-        dict.optionallyAddValueForKey(self.emailConfiguration?.dictionarify(), key: "emailConfiguration")
+        dict["conditions"] = conditions?.dictionarify()
+        dict["emailConfiguration"] = emailConfiguration?.dictionarify()
         
         return dict
     }
 }
 
-public class Trigger : XcodeServerEntity {
+open class Trigger : XcodeServerEntity {
     
-    public let config: TriggerConfig
+    open let config: TriggerConfig
     
     public init(config: TriggerConfig) {
         self.config = config
@@ -142,7 +142,7 @@ public class Trigger : XcodeServerEntity {
         try super.init(json: json)
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         let dict = self.config.dictionarify()
         return dict
     }

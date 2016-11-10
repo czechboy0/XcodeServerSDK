@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class File: XcodeServerEntity {
+open class File: XcodeServerEntity {
     
-    public let status: FileStatus
-    public let filePath: String
+    open let status: FileStatus
+    open let filePath: String
     
     public init(filePath: String, status: FileStatus) {
         self.filePath = filePath
@@ -22,12 +22,12 @@ public class File: XcodeServerEntity {
     
     public required init(json: NSDictionary) throws {
         self.filePath = try json.stringForKey("filePath")
-        self.status = FileStatus(rawValue: try json.intForKey("status")) ?? .Other
+        self.status = FileStatus(rawValue: try json.intForKey("status")) ?? .other
         
         try super.init(json: json)
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         return [
             "status": self.status.rawValue,
             "filePath": self.filePath
@@ -40,9 +40,9 @@ public class File: XcodeServerEntity {
 *  Enum which describes file statuses.
 */
 public enum FileStatus: Int {
-    case Added = 1
-    case Deleted = 2
-    case Modified = 4
-    case Moved = 8192
-    case Other
+    case added = 1
+    case deleted = 2
+    case modified = 4
+    case moved = 8192
+    case other
 }

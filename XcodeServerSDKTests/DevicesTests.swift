@@ -37,12 +37,12 @@ class DevicesTests: XCTestCase {
     ])
     
     func testDictionarify() {
-        let expected = [ "device_id": "1ad0e8785cacca73d980cdb23600383e" ]
-        XCTAssertEqual(macMini.dictionarify(), expected)
+        let expected: [String : Any] = [ "device_id": "1ad0e8785cacca73d980cdb23600383e" ]
+        XCTAssert(macMini.dictionarify() ==  expected)
     }
     
     func testGetDevices() {
-        let expectation = self.expectationWithDescription("Get Devices")
+        let expectation = self.expectation(description: "Get Devices")
         let server = self.getRecordingXcodeServer("get_devices")
         
         server.getDevices { (devices, error) -> () in
@@ -61,7 +61,7 @@ class DevicesTests: XCTestCase {
             expectation.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10.0, handler: nil)
+        self.waitForExpectations(timeout: 10.0, handler: nil)
     }
     
 }

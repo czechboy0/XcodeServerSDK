@@ -18,10 +18,10 @@ extension XcodeServer {
      - parameter toolchains: Optional array of available toolchains.
      - parameter error:      Optional error.
      */
-    public final func getToolchains(completion: (toolchains: [Toolchain]?,error: NSError?) -> ()) {
-        self.sendRequestWithMethod(.GET, endpoint: .Toolchains, params: nil, query: nil, body: nil) { (response, body, error) in
+    public final func getToolchains(_ completion: @escaping (_ toolchains: [Toolchain]?,_ error: Error?) -> ()) {
+        self.sendRequestWithMethod(.get, endpoint: .toolchains, params: nil, query: nil, body: nil) { (response, body, error) in
             if error != nil {
-                completion(toolchains: nil, error: error)
+                completion(nil, error)
                 return
             }
           
@@ -29,9 +29,9 @@ extension XcodeServer {
                 let (result, error): ([Toolchain]?, NSError?) = unthrow { _ in
                     return try XcodeServerArray(body)
                 }
-                completion(toolchains: result, error: error)
+                completion(result, error)
             } else {
-                completion(toolchains: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
             }
         }
     }

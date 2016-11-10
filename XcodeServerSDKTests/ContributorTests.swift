@@ -9,6 +9,14 @@
 import XCTest
 @testable import XcodeServerSDK
 
+public func ==(lhs: [AnyHashable: Any], rhs: [AnyHashable: Any] ) -> Bool {
+    return NSDictionary(dictionary: lhs).isEqual(to: rhs)
+}
+
+public func ==(lhs: [String: Any], rhs: [String: Any] ) -> Bool {
+    return NSDictionary(dictionary: lhs).isEqual(to: rhs)
+}
+
 class ContributorTests: XCTestCase {
 
     let singleEmailContributor = [
@@ -17,7 +25,7 @@ class ContributorTests: XCTestCase {
         kContributorEmails: [
             "foo@bar.com"
         ]
-    ]
+    ] as [String : Any]
     
     let multiEmailContributor = [
         kContributorName: "Baz Bar",
@@ -26,7 +34,7 @@ class ContributorTests: XCTestCase {
             "baz@bar.com",
             "baz@example.com"
         ]
-    ]
+    ] as [String : Any]
     
     var singleEmail: Contributor!
     var multiEmail: Contributor!
@@ -34,8 +42,8 @@ class ContributorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        singleEmail = try! Contributor(json: singleEmailContributor)
-        multiEmail = try! Contributor(json: multiEmailContributor)
+        singleEmail = try! Contributor(json: singleEmailContributor as NSDictionary)
+        multiEmail = try! Contributor(json: multiEmailContributor as NSDictionary)
     }
     
     // MARK: Test cases
@@ -49,8 +57,8 @@ class ContributorTests: XCTestCase {
     
     // MARK: Dictionarify
     func testDictionarify() {
-        XCTAssertEqual(singleEmail.dictionarify(), singleEmailContributor)
-        XCTAssertEqual(multiEmail.dictionarify(), multiEmailContributor)
+        XCTAssert(singleEmail.dictionarify() == singleEmailContributor)
+        XCTAssert(multiEmail.dictionarify() == multiEmailContributor)
     }
     
     func testDescription() {

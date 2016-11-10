@@ -19,7 +19,7 @@ extension XcodeServer {
     - parameter blueprint:  SC blueprint which should be verified.
     - parameter response:   SCM response.
     */
-    public final func verifyGitCredentialsFromBlueprint(blueprint: SourceControlBlueprint, completion: (response: SCMBranchesResponse) -> ()) {
+    public final func verifyGitCredentialsFromBlueprint(_ blueprint: SourceControlBlueprint, completion: @escaping (_ response: SCMBranchesResponse) -> ()) {
         
         //just a proxy with a more explicit name
         self.postSCMBranchesWithBlueprint(blueprint, completion: completion)
@@ -35,27 +35,27 @@ extension XcodeServer {
     - Success:                          Verification was successful.
     */
     public enum SCMBranchesResponse {
-        case Error(ErrorType)
-        case SSHFingerprintFailedToVerify(fingerprint: String, repository: String)
+        case error(Error)
+        case sshFingerprintFailedToVerify(fingerprint: String, repository: String)
         
         //the valid blueprint will have the right certificateFingerprint
-        case Success(branches: [(name: String, isPrimary: Bool)], validBlueprint: SourceControlBlueprint)
+        case success(branches: [(name: String, isPrimary: Bool)], validBlueprint: SourceControlBlueprint)
     }
     
-    final func postSCMBranchesWithBlueprint(blueprint: SourceControlBlueprint, completion: (response: SCMBranchesResponse) -> ()) {
+    final func postSCMBranchesWithBlueprint(_ blueprint: SourceControlBlueprint, completion: @escaping (_ response: SCMBranchesResponse) -> ()) {
         
         let blueprintDict = blueprint.dictionarifyRemoteAndCredentials()
         
-        self.sendRequestWithMethod(.POST, endpoint: .SCM_Branches, params: nil, query: nil, body: blueprintDict) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .scm_Branches, params: nil, query: nil, body: blueprintDict) { (response, body, error) -> () in
             
             if let error = error {
-                completion(response: XcodeServer.SCMBranchesResponse.Error(error))
+                completion(XcodeServer.SCMBranchesResponse.error(error))
                 return
             }
             
             guard let responseObject = body as? NSDictionary else {
-                let e = Error.withInfo("Wrong body: \(body)")
-                completion(response: XcodeServer.SCMBranchesResponse.Error(e))
+                let e = MyError.withInfo("Wrong body: \(body)")
+                completion(XcodeServer.SCMBranchesResponse.error(e))
                 return
             }
             
@@ -68,7 +68,7 @@ extension XcodeServer {
                 let repoErrors = responseObject["repositoryErrors"] as? [NSDictionary],
                 let repoErrorWrap = repoErrors.findFirst({ $0["repository"] as? String == primaryRepoId }),
                 let repoError = repoErrorWrap["error"] as? NSDictionary
-                where repoErrors.count > 0 {
+                , repoErrors.count > 0 {
                     
                     if let code = repoError["code"] as? Int {
                         
@@ -87,18 +87,18 @@ extension XcodeServer {
                                     return
                                     
                                 } else {
-                                    completion(response: XcodeServer.SCMBranchesResponse.SSHFingerprintFailedToVerify(fingerprint: fingerprint, repository: primaryRepoId))
+                                    completion(XcodeServer.SCMBranchesResponse.sshFingerprintFailedToVerify(fingerprint: fingerprint, repository: primaryRepoId))
                                 }
                                 
                             } else {
-                                completion(response: XcodeServer.SCMBranchesResponse.Error(Error.withInfo("No fingerprint provided in error \(repoError)")))
+                                completion(XcodeServer.SCMBranchesResponse.error(MyError.withInfo("No fingerprint provided in error \(repoError)")))
                             }
                             
                         default:
-                            completion(response: XcodeServer.SCMBranchesResponse.Error(Error.withInfo("Unrecognized error: \(repoError)")))
+                            completion(XcodeServer.SCMBranchesResponse.error(MyError.withInfo("Unrecognized error: \(repoError)")))
                         }
                     } else {
-                        completion(response: XcodeServer.SCMBranchesResponse.Error(Error.withInfo("No code provided in error \(repoError)")))
+                        completion(XcodeServer.SCMBranchesResponse.error(MyError.withInfo("No code provided in error \(repoError)")))
                     }
                     return
             }
@@ -108,13 +108,17 @@ extension XcodeServer {
                 let branchesAllRepos = responseObject["branches"] as? NSDictionary,
                 let branches = branchesAllRepos[primaryRepoId] as? NSArray else {
                     
-                    completion(response: XcodeServer.SCMBranchesResponse.Error(Error.withInfo("No branches provided for our primary repo id: \(primaryRepoId).")))
+                    completion(XcodeServer.SCMBranchesResponse.error(MyError.withInfo("No branches provided for our primary repo id: \(primaryRepoId).")))
                     return
             }
             
             //cool, we gots ourselves some branches, let's parse 'em
-            let parsedBranches = branches.map({ (name: $0["name"] as! String, isPrimary: $0["primary"] as! Bool) })
-            completion(response: XcodeServer.SCMBranchesResponse.Success(branches: parsedBranches, validBlueprint: blueprint))
+            let parsedBranches = branches.map { element -> (String, Bool) in
+                guard let dict = element as? [String: Any], let name = dict["name"] as? String, let isPrimary = dict["primary"] as? Bool else { fatalError("unable to parse") }
+                return (name: name, isPrimary: isPrimary)
+            }
+            
+            completion(XcodeServer.SCMBranchesResponse.success(branches: parsedBranches, validBlueprint: blueprint))
         }
     }
     

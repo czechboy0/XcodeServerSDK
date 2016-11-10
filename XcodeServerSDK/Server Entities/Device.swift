@@ -9,28 +9,28 @@
 import Foundation
 import BuildaUtils
 
-public class Device : XcodeServerEntity {
+open class Device : XcodeServerEntity {
     
-    public let osVersion: String
-    public let connected: Bool
-    public let simulator: Bool
-    public let modelCode: String? // Enum?
-    public let deviceType: String? // Enum?
-    public let modelName: String?
-    public let deviceECID: String?
-    public let modelUTI: String?
-    public let activeProxiedDevice: Device?
-    public let trusted: Bool
-    public let name: String
-    public let supported: Bool
-    public let processor: String?
-    public let identifier: String
-    public let enabledForDevelopment: Bool
-    public let serialNumber: String?
-    public let platform: DevicePlatform.PlatformType
-    public let architecture: String // Enum?
-    public let isServer: Bool
-    public let retina: Bool
+    open let osVersion: String
+    open let connected: Bool
+    open let simulator: Bool
+    open let modelCode: String? // Enum?
+    open let deviceType: String? // Enum?
+    open let modelName: String?
+    open let deviceECID: String?
+    open let modelUTI: String?
+    open let activeProxiedDevice: Device?
+    open let trusted: Bool
+    open let name: String
+    open let supported: Bool
+    open let processor: String?
+    open let identifier: String
+    open let enabledForDevelopment: Bool
+    open let serialNumber: String?
+    open let platform: DevicePlatform.PlatformType
+    open let architecture: String // Enum?
+    open let isServer: Bool
+    open let retina: Bool
     
     public required init(json: NSDictionary) throws {
         
@@ -65,7 +65,7 @@ public class Device : XcodeServerEntity {
         try super.init(json: json)
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
         return [
             "device_id": self.id

@@ -16,14 +16,14 @@ class BotParsingTests: XCTestCase {
     
     func testParseOSXBot() {
         
-        let exp = self.expectationWithDescription("Network")
+        let exp = self.expectation(description: "Network")
         let server = self.getRecordingXcodeServer("osx_bot")
         
         server.getBot("963bc95f1c1a56f69f3392b4aa03302f") { (bots, error) in
             exp.fulfill()
         }
         
-        self.waitForExpectationsWithTimeout(10, handler: nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testShared() throws {
@@ -39,7 +39,7 @@ class BotParsingTests: XCTestCase {
     
     func testDeleteBot() {
         
-        let exp = self.expectationWithDescription("Network")
+        let exp = self.expectation(description: "Network")
         let server = self.getRecordingXcodeServer("bot_deletion")
         
         server.deleteBot("5f79bd4f6eb05c645336606cc790ccd7", revision: "5-4939a8253e8243107a0d4733490fd36e") { (success, error) in
@@ -47,7 +47,7 @@ class BotParsingTests: XCTestCase {
             XCTAssertTrue(success)
             exp.fulfill()
         }
-        self.waitForExpectationsWithTimeout(10, handler: nil)
+        self.waitForExpectations(timeout: 10, handler: nil)
     }
     
 //    func testBots() {

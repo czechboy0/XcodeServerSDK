@@ -26,16 +26,16 @@ extension XcodeServer {
     - parameter integrations:   Optional array of integrations returned from XCS.
     - parameter error:          Optional error.
     */
-    public final func getBotIntegrations(botId: String, query: [String: String], completion: (integrations: [Integration]?, error: NSError?) -> ()) {
+    public final func getBotIntegrations(_ botId: String, query: [String: String], completion: @escaping (_ integrations: [Integration]?, _ error: Error?) -> ()) {
         
         let params = [
             "bot": botId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .Integrations, params: params, query: query, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .integrations, params: params, query: query, body: nil) { (response, body, error) -> () in
             
             if error != nil {
-                completion(integrations: nil, error: error)
+                completion(nil, error)
                 return
             }
             
@@ -43,9 +43,9 @@ extension XcodeServer {
                 let (result, error): ([Integration]?, NSError?) = unthrow {
                     return try XcodeServerArray(body)
                 }
-                completion(integrations: result, error: error)
+                completion(result, error)
             } else {
-                completion(integrations: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
             }
         }
     }
@@ -57,16 +57,16 @@ extension XcodeServer {
     - parameter integration:    Optional object of integration returned if run was successful.
     - parameter error:          Optional error.
     */
-    public final func postIntegration(botId: String, completion: (integration: Integration?, error: NSError?) -> ()) {
+    public final func postIntegration(_ botId: String, completion: @escaping (_ integration: Integration?, _ error: Error?) -> ()) {
         
         let params = [
             "bot": botId
         ]
         
-        self.sendRequestWithMethod(.POST, endpoint: .Integrations, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .integrations, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
-                completion(integration: nil, error: error)
+                completion(nil, error)
                 return
             }
             
@@ -74,9 +74,9 @@ extension XcodeServer {
                 let (result, error): (Integration?, NSError?) = unthrow {
                     return try Integration(json: body)
                 }
-                completion(integration: result, error: error)
+                completion(result, error)
             } else {
-                completion(integration: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
             }
         }
     }
@@ -89,25 +89,25 @@ extension XcodeServer {
     - parameter integrations:   Optional array of integrations.
     - parameter error:          Optional error.
     */
-    public final func getIntegrations(completion: (integrations: [Integration]?, error: NSError?) -> ()) {
+    public final func getIntegrations(_ completion: @escaping (_ integrations: [Integration]?, _ error: Error?) -> ()) {
         
-        self.sendRequestWithMethod(.GET, endpoint: .Integrations, params: nil, query: nil, body: nil) {
+        self.sendRequestWithMethod(.get, endpoint: .integrations, params: nil, query: nil, body: nil) {
             (response, body, error) -> () in
             
             guard error == nil else {
-                completion(integrations: nil, error: error)
+                completion(nil, error)
                 return
             }
             
             guard let integrationsBody = (body as? NSDictionary)?["results"] as? NSArray else {
-                completion(integrations: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
                 return
             }
             
             let (result, error): ([Integration]?, NSError?) = unthrow {
                 return try XcodeServerArray(integrationsBody)
             }
-            completion(integrations: result, error: error)
+            completion(result, error)
         }
     }
     
@@ -119,29 +119,29 @@ extension XcodeServer {
     - Optional retrieved integration.
     - Optional operation error.
     */
-    public final func getIntegration(integrationId: String, completion: (integration: Integration?, error: NSError?) -> ()) {
+    public final func getIntegration(_ integrationId: String, completion: @escaping (_ integration: Integration?, _ error: Error?) -> ()) {
         
         let params = [
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .Integrations, params: params, query: nil, body: nil) {
+        self.sendRequestWithMethod(.get, endpoint: .integrations, params: params, query: nil, body: nil) {
             (response, body, error) -> () in
             
             guard error == nil else {
-                completion(integration: nil, error: error)
+                completion(nil, error)
                 return
             }
             
             guard let integrationBody = body as? NSDictionary else {
-                completion(integration: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
                 return
             }
             
             let (result, error): (Integration?, NSError?) = unthrow {
                 return try Integration(json: integrationBody)
             }
-            completion(integration: result, error: error)
+            completion(result, error)
         }
     }
     
@@ -152,20 +152,20 @@ extension XcodeServer {
     - parameter success:       Integration cancelling success indicator.
     - parameter error:         Optional operation error.
     */
-    public final func cancelIntegration(integrationId: String, completion: (success: Bool, error: NSError?) -> ()) {
+    public final func cancelIntegration(_ integrationId: String, completion: @escaping (_ success: Bool, _ error: Error?) -> ()) {
         
         let params = [
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.POST, endpoint: .CancelIntegration, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.post, endpoint: .cancelIntegration, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             if error != nil {
-                completion(success: false, error: error)
+                completion(false, error)
                 return
             }
             
-            completion(success: true, error: nil)
+            completion(true, nil)
         }
     }
     
@@ -176,28 +176,28 @@ extension XcodeServer {
     - parameter success:       Optional Integration Commits object with result.
     - parameter error:         Optional operation error.
     */
-    public final func getIntegrationCommits(integrationId: String, completion: (integrationCommits: IntegrationCommits?, error: NSError?) ->()) {
+    public final func getIntegrationCommits(_ integrationId: String, completion: @escaping (_ integrationCommits: IntegrationCommits?, _ error: Error?) ->()) {
         
         let params = [
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .Commits, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .commits, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             guard error == nil else {
-                completion(integrationCommits: nil, error: error)
+                completion(nil, error)
                 return
             }
             
             guard let integrationCommitsBody = (body as? NSDictionary)?["results"] as? NSArray else {
-                completion(integrationCommits: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
                 return
             }
             
             let (result, error): (IntegrationCommits?, NSError?) = unthrow {
                 return try IntegrationCommits(json: integrationCommitsBody[0] as! NSDictionary)
             }
-            completion(integrationCommits: result, error: error)
+            completion(result, error)
         }
         
     }
@@ -209,28 +209,28 @@ extension XcodeServer {
     - parameter success:       Optional Integration Issues object with result.
     - parameter error:         Optional operation error.
     */
-    public final func getIntegrationIssues(integrationId: String, completion: (integrationIssues: IntegrationIssues?, error: ErrorType?) ->()) {
+    public final func getIntegrationIssues(_ integrationId: String, completion: @escaping (_ integrationIssues: IntegrationIssues?, _ error: Error?) ->()) {
         
         let params = [
             "integration": integrationId
         ]
         
-        self.sendRequestWithMethod(.GET, endpoint: .Issues, params: params, query: nil, body: nil) { (response, body, error) -> () in
+        self.sendRequestWithMethod(.get, endpoint: .issues, params: params, query: nil, body: nil) { (response, body, error) -> () in
             
             guard error == nil else {
-                completion(integrationIssues: nil, error: error)
+                completion(nil, error)
                 return
             }
             
             guard let integrationIssuesBody = body as? NSDictionary else {
-                completion(integrationIssues: nil, error: Error.withInfo("Wrong body \(body)"))
+                completion(nil, MyError.withInfo("Wrong body \(body)"))
                 return
             }
             
             let (result, error): (IntegrationIssues?, NSError?) = unthrow {
                 return try IntegrationIssues(json: integrationIssuesBody)
             }
-            completion(integrationIssues: result, error: error)
+            completion(result, error)
         }
         
     }

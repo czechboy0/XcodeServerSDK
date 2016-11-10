@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class BotConfiguration : XcodeServerEntity {
+open class BotConfiguration : XcodeServerEntity {
     
     /**
     Enum with values describing when Bots history
@@ -20,10 +20,10 @@ public class BotConfiguration : XcodeServerEntity {
     - Once_a_Week: Clean once a week on first build
     */
     public enum CleaningPolicy : Int {
-        case Never = 0
-        case Always
-        case Once_a_Day
-        case Once_a_Week
+        case never = 0
+        case always
+        case once_a_Day
+        case once_a_Week
         
         /**
         Method for preinting in human readable Bots
@@ -33,13 +33,13 @@ public class BotConfiguration : XcodeServerEntity {
         */
         public func toString() -> String {
             switch self {
-                case .Never:
+                case .never:
                     return "Never"
-                case .Always:
+                case .always:
                     return "Always"
-                case .Once_a_Day:
+                case .once_a_Day:
                     return "Once a day (first build)"
-                case .Once_a_Week:
+                case .once_a_Week:
                     return "Once a week (first build)"
             }
         }
@@ -64,7 +64,7 @@ public class BotConfiguration : XcodeServerEntity {
     */
     public enum TestingDestinationIdentifier : Int {
         case iOSAndWatch = 0
-        case Mac = 7
+        case mac = 7
     }
     
     /**
@@ -75,51 +75,51 @@ public class BotConfiguration : XcodeServerEntity {
     - UseSchemeSettings:    Respects the preference in Scheme
     */
     public enum CodeCoveragePreference: Int {
-        case Disabled = 0
-        case Enabled = 1
-        case UseSchemeSetting = 2
+        case disabled = 0
+        case enabled = 1
+        case useSchemeSetting = 2
     }
     
     /**
     Enum describing build config preference. Xcode 7 API allows for overriding a config setup in the scheme for a specific one. UseSchemeSetting is the default.
     */
     public enum BuildConfiguration {
-        case OverrideWithSpecific(String)
-        case UseSchemeSetting
+        case overrideWithSpecific(String)
+        case useSchemeSetting
     }
     
-    public let builtFromClean: CleaningPolicy
-    public let codeCoveragePreference: CodeCoveragePreference
-    public let buildConfiguration: BuildConfiguration
-    public let analyze: Bool
-    public let test: Bool
-    public let archive: Bool
-    public let exportsProductFromArchive: Bool
-    public let schemeName: String
-    public let schedule: BotSchedule
-    public let triggers: [Trigger]
-    public var testingDestinationType: TestingDestinationIdentifier {
+    open let builtFromClean: CleaningPolicy
+    open let codeCoveragePreference: CodeCoveragePreference
+    open let buildConfiguration: BuildConfiguration
+    open let analyze: Bool
+    open let test: Bool
+    open let archive: Bool
+    open let exportsProductFromArchive: Bool
+    open let schemeName: String
+    open let schedule: BotSchedule
+    open let triggers: [Trigger]
+    open var testingDestinationType: TestingDestinationIdentifier {
         get {
             if let firstFilter = self.deviceSpecification.filters.first {
                 if case .OSX = firstFilter.platform.type {
-                    return .Mac
+                    return .mac
                 }
             }
             return .iOSAndWatch
         }
     }
-    public let deviceSpecification: DeviceSpecification
-    public let sourceControlBlueprint: SourceControlBlueprint
+    open let deviceSpecification: DeviceSpecification
+    open let sourceControlBlueprint: SourceControlBlueprint
     
     public required init(json: NSDictionary) throws {
         
-        self.builtFromClean = CleaningPolicy(rawValue: try json.intForKey("builtFromClean")) ?? .Never
-        self.codeCoveragePreference = CodeCoveragePreference(rawValue: json.optionalIntForKey("codeCoveragePreference") ?? 0) ?? .UseSchemeSetting
+        self.builtFromClean = CleaningPolicy(rawValue: try json.intForKey("builtFromClean")) ?? .never
+        self.codeCoveragePreference = CodeCoveragePreference(rawValue: json.optionalIntForKey("codeCoveragePreference") ?? 0) ?? .useSchemeSetting
         
         if let buildConfigOverride = json.optionalStringForKey("buildConfiguration") {
-            self.buildConfiguration = BuildConfiguration.OverrideWithSpecific(buildConfigOverride)
+            self.buildConfiguration = BuildConfiguration.overrideWithSpecific(buildConfigOverride)
         } else {
-            self.buildConfiguration = .UseSchemeSetting
+            self.buildConfiguration = .useSchemeSetting
         }
         self.analyze = try json.boolForKey("performsAnalyzeAction")
         self.archive = try json.boolForKey("performsArchiveAction")
@@ -146,8 +146,8 @@ public class BotConfiguration : XcodeServerEntity {
     
     public init(
         builtFromClean: CleaningPolicy,
-        codeCoveragePreference: CodeCoveragePreference = .UseSchemeSetting,
-        buildConfiguration: BuildConfiguration = .UseSchemeSetting,
+        codeCoveragePreference: CodeCoveragePreference = .useSchemeSetting,
+        buildConfiguration: BuildConfiguration = .useSchemeSetting,
         analyze: Bool,
         test: Bool,
         archive: Bool,
@@ -174,9 +174,9 @@ public class BotConfiguration : XcodeServerEntity {
             super.init()
     }
     
-    public override func dictionarify() -> NSDictionary {
+    open override func dictionarify() -> [String: Any] {
         
-        let dictionary = NSMutableDictionary()
+        var dictionary: [String: Any] = [:]
         
         //blueprint
         dictionary["sourceControlBlueprint"] = self.sourceControlBlueprint.dictionarify()
@@ -193,13 +193,26 @@ public class BotConfiguration : XcodeServerEntity {
         dictionary["exportsProductFromArchive"] = self.exportsProductFromArchive
         dictionary["testingDestinationType"] = self.testingDestinationType.rawValue //TODO: figure out if we still need this in Xcode 7
         
-        if case .OverrideWithSpecific(let buildConfig) = self.buildConfiguration {
+        if case .overrideWithSpecific(let buildConfig) = self.buildConfiguration {
             dictionary["buildConfiguration"] = buildConfig
         }
         
         let botScheduleDict = self.schedule.dictionarify() //needs to be merged into the main bot config dict
-        dictionary.addEntriesFromDictionary(botScheduleDict as [NSObject : AnyObject])
+        dictionary.merge(with: botScheduleDict)
         
         return dictionary
+    }
+}
+
+private extension Dictionary {
+    
+    mutating func merge(with dictionary: Dictionary) {
+        dictionary.forEach { updateValue($1, forKey: $0) }
+    }
+    
+    func merged(with dictionary: Dictionary) -> Dictionary {
+        var dict = self
+        dict.merge(with: dictionary)
+        return dict
     }
 }

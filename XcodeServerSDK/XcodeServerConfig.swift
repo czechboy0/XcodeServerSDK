@@ -10,15 +10,15 @@ import Foundation
 import BuildaUtils
 
 /// Posible errors thrown by `XcodeServerConfig`
-public enum ConfigurationErrors : ErrorType {
+public enum ConfigurationErrors : Error {
     /// Thrown when no host was provided
-    case NoHostProvided
+    case noHostProvided
     /// Thrown when an invalid host is provided (host is returned)
-    case InvalidHostProvided(String)
+    case invalidHostProvided(String)
     /// Thrown when a host is provided with an invalid scheme (explanation message returned)
-    case InvalidSchemeProvided(String)
+    case invalidSchemeProvided(String)
     /// Thrown when only one of (username, password) is provided, which is not valid
-    case InvalidCredentialsProvided
+    case invalidCredentialsProvided
 }
 
 private struct Keys {
@@ -40,11 +40,11 @@ public struct XcodeServerConfig : JSONSerializable {
     //if set to false, fails if server certificate is not trusted yet
     public let automaticallyTrustSelfSignedCertificates: Bool = true
     
-    public func jsonify() -> NSDictionary {
-        let dict = NSMutableDictionary()
+    public func jsonify() -> [String: Any] {
+        var dict: [String: Any] = [:]
         dict[Keys.Id] = self.id
         dict[Keys.Host] = self.host
-        dict.optionallyAddValueForKey(self.user, key: Keys.User)
+        dict[Keys.User] = self.user
         return dict
     }
     
@@ -77,21 +77,21 @@ public struct XcodeServerConfig : JSONSerializable {
         var host = _host
         
         guard !host.isEmpty else {
-            throw ConfigurationErrors.NoHostProvided
+            throw ConfigurationErrors.noHostProvided
         }
         
         guard let url = NSURL(string: host) else {
-            throw ConfigurationErrors.InvalidHostProvided(host)
+            throw ConfigurationErrors.invalidHostProvided(host)
         }
         
-        guard url.scheme.isEmpty || url.scheme == "https" else {
+        guard url.scheme == nil || url.scheme! == "https" else {
             let errMsg = "Xcode Server generally uses https, please double check your hostname"
             Log.error(errMsg)
-            throw ConfigurationErrors.InvalidSchemeProvided(errMsg)
+            throw ConfigurationErrors.invalidSchemeProvided(errMsg)
         }
         
         // validate if host is a valid URL
-        if url.scheme.isEmpty {
+        if url.scheme == nil {
             // exted host with https scheme
             host = "https://" + host
         }
@@ -113,15 +113,15 @@ public struct XcodeServerConfig : JSONSerializable {
         - `InvalidHostProvided`: When the host provided doesn't produce a valid `URL`
         - `InvalidSchemeProvided`: When the provided scheme is not `HTTPS`
     */
-    public init(json: NSDictionary) throws {
+    public init(json: [String: Any]) throws {
         
-        guard let host = json.optionalStringForKey(Keys.Host) else {
-            throw ConfigurationErrors.NoHostProvided
+        guard let host = json[Keys.Host] as? String else {
+            throw ConfigurationErrors.noHostProvided
         }
 
-        let user = json.optionalStringForKey(Keys.User)
-        let password = json.optionalStringForKey(Keys.Password)
-        let id = json.optionalStringForKey(Keys.Id)
+        let user = json[Keys.User] as? String
+        let password = json[Keys.Password] as? String
+        let id = json[Keys.Id] as? RefType
         try self.init(host: host, user: user, password: password, id: id)
     }
 }

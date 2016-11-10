@@ -14,16 +14,16 @@ class BotConfigurationTests: XCTestCase {
     func testCleaningPolicyToString() {
         var policy: BotConfiguration.CleaningPolicy
         
-        policy = .Never
+        policy = .never
         XCTAssertEqual(policy.toString(), "Never")
         
-        policy = .Always
+        policy = .always
         XCTAssertEqual(policy.toString(), "Always")
         
-        policy = .Once_a_Day
+        policy = .once_a_Day
         XCTAssertEqual(policy.toString(), "Once a day (first build)")
         
-        policy = .Once_a_Week
+        policy = .once_a_Week
         XCTAssertEqual(policy.toString(), "Once a week (first build)")
     }
     
@@ -31,35 +31,35 @@ class BotConfigurationTests: XCTestCase {
         
         var filter: DeviceFilter.FilterType
         
-        filter = .AllAvailableDevicesAndSimulators
+        filter = .allAvailableDevicesAndSimulators
         XCTAssertEqual(filter.toString(), "All Available Devices and Simulators")
         
-        filter = .AllDevices
+        filter = .allDevices
         XCTAssertEqual(filter.toString(), "All Devices")
         
-        filter = .AllSimulators
+        filter = .allSimulators
         XCTAssertEqual(filter.toString(), "All Simulators")
         
-        filter = .SelectedDevicesAndSimulators
+        filter = .selectedDevicesAndSimulators
         XCTAssertEqual(filter.toString(), "Selected Devices and Simulators")
     }
     
     func testAvailableFiltersForPlatform() {
         
         XCTAssertEqual(DeviceFilter.FilterType.availableFiltersForPlatform(.iOS), [
-            .AllAvailableDevicesAndSimulators,
-            .AllDevices,
-            .AllSimulators,
-            .SelectedDevicesAndSimulators
-            ])
+            .allAvailableDevicesAndSimulators,
+            .allDevices,
+            .allSimulators,
+            .selectedDevicesAndSimulators
+            ] as [DeviceFilter.FilterType])
         
         XCTAssertEqual(DeviceFilter.FilterType.availableFiltersForPlatform(.OSX), [
-            .AllAvailableDevicesAndSimulators
-            ])
+            .allAvailableDevicesAndSimulators
+            ] as [DeviceFilter.FilterType])
 
         XCTAssertEqual(DeviceFilter.FilterType.availableFiltersForPlatform(.watchOS), [
-            .AllAvailableDevicesAndSimulators
-            ])
+            .allAvailableDevicesAndSimulators
+            ] as [DeviceFilter.FilterType])
     }
 
 }
