@@ -11,19 +11,22 @@ import BuildaUtils
 
 // MARK: - XcodeSever API Routes for Authorization
 extension XcodeServer {
-    
+
+    /// Indicates whether the operation completed successfully and any errors.
+    ///
+    /// - Parameter success: Indicates whether the operation was successful.
+    /// - Parameter error: Error encountered during the operation.
+    public typealias Completion = (_ success: Bool, _ error: Error?) -> Void
+
     // MARK: Sign in/Sign out
-    
-    /**
-    XCS API call for user sign in.
-    
-    - parameter success:    Indicates whether sign in was successful.
-    - parameter error:      Error indicating failure of sign in.
-    */
+
+    /// XCS API call for user sign in.
+    ///
+    /// - Parameter completion: Completion handler.
     public final func login(_ completion: @escaping Completion) {
         
         self.sendRequestWithMethod(.post, endpoint: .login, params: nil, query: nil, body: nil) {
-            (response, body, error) -> () in
+            (response, _, error) -> () in
             
             if error != nil {
                 completion(false, error)
@@ -45,10 +48,8 @@ extension XcodeServer {
     /**
     XCS API call for user sign out.
     
-    - parameter success:    Indicates whether sign out was successful.
-    - parameter error:      Error indicating failure of sign out.
+    - Parameter completion: Completion handler.
     */
-    public typealias Completion = (Bool, Error?) -> Void
     public final func logout(_ completion: @escaping Completion) {
         
         self.sendRequestWithMethod(.post, endpoint: .logout, params: nil, query: nil, body: nil) {
